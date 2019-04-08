@@ -1,6 +1,6 @@
 # TSCT Portal
 
-[![Build Status](https://travis-ci.org/ts-cset/180-project-structure.svg?branch=master)](https://travis-ci.org/ts-cset/180-project-structure)
+[![Build Status](https://travis-ci.org/ts-cset/green-portal.svg?branch=master)](https://travis-ci.org/ts-cset/green-portal)
 
 The unofficial learning management system for Thaddeus Stevens College of Technology built on Python, Flask, and PostgreSQL.
 
@@ -56,4 +56,3 @@ If you want to run tests, you'll have to create a second database according to t
 ```
 
 The first command will run the test functions defined in the `tests/` directory. The second gives a more detailed output. Run the third command to generate a report of the code covered by the tests. You can view this report in the terminal with `coverage report` or with more detail in the browser with `coverage html`.
-
