@@ -50,7 +50,8 @@ class AuthActions(object):
         return self.login(email='teacher@stevenscollege.edu', password='qwerty')
 
     # TODO: add login_student function
-
+    def login_student(self):
+        return self.login(email='student@stevenscollege.edu', password='asdfgh')
     # TODO: add logout function
 
 

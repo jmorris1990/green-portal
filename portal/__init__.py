@@ -23,18 +23,18 @@ def create_app(test_config=None):
         if request.method == 'POST':
             email = request.form['email']
             password = request.form['password']
-            conn = db.get_db()
-            # maybe have an error
+            #have an error
             error = None
+            conn = db.get_db()
             cursor = conn.cursor()
             cursor.execute(
-                'SELECT * FROM users WHERE email = %s', (email,)
+                'SELECT * FROM users WHERE email = %s;', (email,)
             )
             user = cursor.fetchone()
             if user is None:
                 # throw an error
                 error = 'Incorrect email'
-            elif user[2] == password:
+            elif user[2] != password:
                 error = 'Incorrect password'
             if error is None:
                 session.clear()
@@ -46,5 +46,8 @@ def create_app(test_config=None):
         # if a post has happened i want to go to a new template(view)
         return render_template('index.html')
 
+    @app.route('/home')
+    def home():
+        return render_template('home.html')
 
     return app
