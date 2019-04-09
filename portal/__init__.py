@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, flash, session, url_for, g, redirect
 
 
 def create_app(test_config=None):
@@ -20,7 +20,8 @@ def create_app(test_config=None):
 
     @app.route('/')
     def index():
+        
         return render_template('index.html')
 
-    return app
 
+    return app

@@ -37,3 +37,17 @@ def client(app):
 def runner(app):
     return app.test_cli_runner()
 
+
+# creating an object to put data into the database
+class AuthActions(object):
+    def __init__(self, client):
+        self._client = client
+
+    def login(self, email='teacher@stevenscollege.edu', password='qwerty'):
+        return self._client.post('/',
+                                 data={'email': email, 'password': password}
+                                 )
+        
+@pytest.fixture
+def auth(client):
+    return AuthActions
