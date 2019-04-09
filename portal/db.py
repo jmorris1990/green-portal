@@ -45,8 +45,37 @@ def init_db_command():
     init_db()
     click.echo('Initialized the database.')
 
+def create_user(email, password, role):
+    
+
+    conn = get_db()
+    
+    cur = conn.cursor()
+    cur.execute("""
+    INSERT INTO users (email, password, role)
+    VALUES (%s, %s, %s);
+    """, (email, password, role))
+    conn.commit()
+    cur.close()
+    
+   
+
+
+@click.command('create-user')
+@click.argument('email')
+@click.argument('password')
+@click.argument('role')
+@with_appcontext
+def create_user_command(email, password, role):
+    """create a new user"""
+    if role != 'student' and role != 'teacher':
+        click.echo("User role must be 'student' or 'teacher'")
+    else:
+        create_user(email, password, role)
+        click.echo('Created user %s with the %s role' % (email, role))
 
 def init_app(app):
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
+    app.cli.add_command(create_user_command)
 
