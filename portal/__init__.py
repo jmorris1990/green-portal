@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash, session, url_for, g, redirect
+from flask import Flask, render_template, flash, session, url_for, g, redirect, request
 
 
 def create_app(test_config=None):
@@ -18,9 +18,32 @@ def create_app(test_config=None):
     from . import db
     db.init_app(app)
 
-    @app.route('/')
+    @app.route('/', methods=('GET', 'POST'))
     def index():
-        
+        if request.method == 'POST':
+            email = request.form['email']
+            password = request.form['password']
+            conn = db.get_db()
+            # maybe have an error
+            error = None
+            cursor = conn.cursor()
+            cursor.execute(
+                'SELECT * FROM users WHERE email = %s', (email,)
+            )
+            user = cursor.fetchone()
+            if user is None:
+                # throw an error
+                error = 'Incorrect email'
+            elif user[2] == password:
+                error = 'Incorrect password'
+            if error is None:
+                session.clear()
+                session['user_id'] = user[0]
+                return redirect(url_for('home'))
+
+            flash(error)
+
+        # if a post has happened i want to go to a new template(view)
         return render_template('index.html')
 
 
