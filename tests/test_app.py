@@ -9,3 +9,12 @@ def test_config():
 def test_index(client):
     response = client.get('/')
     assert b'<h1>TSCT Portal</h1>' in response.data
+
+def test_home(client, auth):
+    response = client.get('/home')
+    assert b'<h1>TSCT Portal</h1>' in response.data
+
+    user = auth.login_teacher()
+    response = client.get('/home')
+    
+    assert b'<h1>Welcome to the Portal</h1>' in response.data
