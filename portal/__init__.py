@@ -1,5 +1,16 @@
+from functools import wraps
 from flask import Flask, render_template, flash, session, url_for, g, redirect, request
 
+
+def login_required(view):
+    @wraps(view)
+    def wrapped_view(**kwargs):
+        if session.get('user') is None:
+            return redirect(url_for('.index'))
+
+        return view(**kwargs)
+
+    return wrapped_view
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
@@ -34,19 +45,21 @@ def create_app(test_config=None):
             if user is None:
                 # throw an error
                 error = 'Incorrect email'
+                flash(error)
             elif user[2] != password:
                 error = 'Incorrect password'
-            if error is None:
+                flash(error)
+            else:
                 session.clear()
-                session['user_id'] = user[0]
-                return redirect(url_for('home'))
+                session['user'] = user
 
-            flash(error)
+                return redirect(url_for('home'))
 
         # if a post has happened i want to go to a new template(view)
         return render_template('index.html')
 
     @app.route('/home')
+    @login_required
     def home():
         return render_template('home.html')
 
