@@ -53,7 +53,8 @@ class AuthActions(object):
     def login_student(self):
         return self.login(email='student@stevenscollege.edu', password='asdfgh')
     # TODO: add logout function
-
+    def logout_student(self):
+        return self._client.get('/')
 
 @pytest.fixture
 def auth(client):

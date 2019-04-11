@@ -63,4 +63,11 @@ def create_app(test_config=None):
     def home():
         return render_template('home.html')
 
+
+    @app.route('/logout')
+    # @login_required
+    def logout():
+        session.clear()
+        return redirect(url_for('index'))
+
     return app
