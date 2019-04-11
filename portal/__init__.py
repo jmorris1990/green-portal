@@ -1,5 +1,6 @@
 from functools import wraps
-from flask import Flask, render_template, flash, session, url_for, g, redirect, request
+from flask import Flask, render_template, flash, session, url_for, redirect, request
+from werkzeug.security import check_password_hash
 
 
 def login_required(view):
@@ -48,13 +49,12 @@ def create_app(test_config=None):
                 # throw an error
                 error = 'Incorrect email'
                 flash(error)
-            elif user[2] != password:
+            elif not check_password_hash(user[2], password):
                 error = 'Incorrect password'
                 flash(error)
             else:
                 session.clear()
                 session['user'] = user
-
 
                 return redirect(url_for('home'))
 

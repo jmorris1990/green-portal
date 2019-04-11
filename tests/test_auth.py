@@ -3,7 +3,7 @@ from flask import session
 def test_login(client, auth):
     assert client.get('/').status_code == 200
     response = auth.login_teacher()
-    assert response.status_code == 302
+    assert response.status_code == 200
     print(response.headers)
     print(response.data)
 

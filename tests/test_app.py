@@ -16,6 +16,7 @@ def test_home(client, auth):
 
     user = auth.login_teacher()
     response = client.get('/home')
+    print(response)
     assert b'<h1>Welcome to the Portal</h1>' in response.data
 
     user = auth.login_student()
