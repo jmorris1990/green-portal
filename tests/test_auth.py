@@ -23,3 +23,5 @@ def test_logout(client, auth):
     with client:
         auth.logout_student()
         assert 'user' not in session
+        auth.logout_teacher()
+        assert 'user' not in session
