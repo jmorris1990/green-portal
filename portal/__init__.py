@@ -63,4 +63,28 @@ def create_app(test_config=None):
     def home():
         return render_template('home.html')
 
+    
+    @app.route('/courses')
+    @login_required
+    def courses():
+        con = db.get_db()
+        cur = con.cursor()
+
+        user_id = session.get('user')[0]
+
+        cur.execute("""
+            SELECT courses.id, courses.name FROM usercourses
+            JOIN users ON usercourses.user_id = users.id,
+                 courses ON usercourses.course_id = courses.id
+            WHERE users.id = %s;
+        """,
+        (user_id))
+
+        my_courses = cur.fetchall()
+
+        cur.close()
+        con.close()
+
+        return render_template('courses.html', role=session.get('user')[3], courses=my_courses)
+
     return app

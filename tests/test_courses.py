@@ -8,7 +8,7 @@ def test_courses(client, auth):
     response = client.get('/courses')
     assert b'<ul class="courses">' in response.data
     assert b'<li>Course 1 <a href' in response.data
-    assert b'<a href="/add_courses"' in response.data
+    assert b'<a href="/courses/add"' in response.data
 
 def test_add_courses(client, auth):
     user = auth.login_student()
@@ -24,7 +24,7 @@ def test_add_courses(client, auth):
 def test_edit_courses(client, auth):
     user = auth.login_student()
     response = client.get('/courses/edit/1')
-    assert response.status_code == 401 #Unauthorized
+    assert response.status_code == 404
 
     user = auth.login_teacher()
     response = client.get('/courses/edit/1')
