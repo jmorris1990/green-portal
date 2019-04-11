@@ -42,6 +42,8 @@ def create_app(test_config=None):
                 'SELECT * FROM users WHERE email = %s;', (email,)
             )
             user = cursor.fetchone()
+            cursor.close()
+            conn.close()
             if user is None:
                 # throw an error
                 error = 'Incorrect email'
@@ -53,6 +55,7 @@ def create_app(test_config=None):
                 session.clear()
                 session['user'] = user
 
+
                 return redirect(url_for('home'))
 
         # if a post has happened i want to go to a new template(view)
@@ -62,5 +65,12 @@ def create_app(test_config=None):
     @login_required
     def home():
         return render_template('home.html')
+
+
+    @app.route('/logout')
+    # @login_required
+    def logout():
+        session.clear()
+        return redirect(url_for('index'))
 
     return app

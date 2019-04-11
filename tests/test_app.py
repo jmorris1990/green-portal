@@ -18,6 +18,6 @@ def test_home(client, auth):
     response = client.get('/home')
     assert b'<h1>Welcome to the Portal</h1>' in response.data
 
-    usr = auth.login_student()
+    user = auth.login_student()
     response = client.get('/home')
     assert b'<h1>Welcome to the Portal</h1>' in response.data
