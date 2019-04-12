@@ -48,8 +48,7 @@ def index():
         )
         # set the user to be only the ID
         user = cursor.fetchone()
-        print(user)
-
+        
         if user is None:
             # throw an error
             error = 'Incorrect email'
@@ -58,10 +57,8 @@ def index():
             error = 'Incorrect password'
             flash(error)
         else:
-            print(user)
             session.clear()
             session['user'] = user
-            print(session)
             cursor.close()
             conn.close()
 
