@@ -25,11 +25,11 @@ def load_logged_in_user():
     else:
         conn = get_db()
         cursor = conn.cursor()
-        g.user = cursor.execute(
+        cursor.execute(
             'SELECT * FROM user WHERE id = %s', (user_id,)
         )
 
-        user = g.user.fetchone()
+        g.user = cursor.fetchone()
         cursor.close()
         conn.close()
 
