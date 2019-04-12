@@ -21,6 +21,10 @@ def test_add_courses(client, auth):
     assert b'<label for="name">' in response.data
     assert b'<input type="text" name="name"' in response.data
 
+    response = client.post('/courses/add', data=dict(name="New Course", code="EX 108", session="B", days="MWF", start="9:30:00", end="10:50:00", description="foo"))
+    assert response.status_code == 200
+
+
 def test_edit_courses(client, auth):
     user = auth.login_student()
     response = client.get('/courses/edit/1')
@@ -33,3 +37,9 @@ def test_edit_courses(client, auth):
     assert b'<input type="text" name="name"' not in response.data
     assert b'<label for="time">' in response.data
     assert b'<input type="text" name="time"' in response.data
+
+    response = client.post('/courses/edit/1', data=dict(name="Edited Course", code="EX 170", session="A", days="TR", start="9:00:00", end="9:50:00", description="bar"))
+    assert response.status_code == 200
+    
+    response = client.get('/courses')
+    assert b'<li>Edited Course' in response.data
