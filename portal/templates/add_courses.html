@@ -1,0 +1,43 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Add Courses{% endblock %}
+
+{% block content %}
+<section>
+    <a href="/courses">My Courses</a>
+</section>
+<section>
+    <form method="POST">
+        <label for="name">
+            Name:
+            <input type="text" name="name" id="name">
+        </label>
+        <label for="code">
+            Course Code:
+            <input type="text" name="code" id="code">
+        </label>
+        <label for="session">
+            Session Letter:
+            <input type="text" name="session" id="session">
+        </label>
+        <label for="days">
+            Days (MTWRF):
+            <input type="text" name="days" id="days">
+        </label>
+        <label for="start">
+            Start Time:
+            <input type="text" name="start" id="start">
+        </label>
+        <label for="end">
+            End Time:
+            <input type="text" name="end" id="end">
+        </label>
+        <label for="description">
+            Class Description:
+            <input type="text" name="description" id="description">
+        </label>
+
+        <input type="submit" name="submit" id="submit" value="Submit">
+    </form>
+</section>
+{% endblock %}

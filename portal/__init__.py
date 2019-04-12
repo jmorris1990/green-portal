@@ -1,5 +1,5 @@
 from functools import wraps
-from flask import Flask, render_template, flash, session, url_for, g, redirect, request
+from flask import Flask, render_template, flash, session, url_for, g, redirect, request, make_response
 
 
 def login_required(view):
@@ -83,5 +83,53 @@ def create_app(test_config=None):
         con.close()
 
         return render_template('courses.html', role=session.get('user')[3], courses=my_courses)
+
+    
+    @app.route('/courses/add', methods=['GET', 'POST'])
+    @login_required
+    def add_courses():
+        if session.get('user')[3] != 'teacher':
+            return make_response("Unauthorized", 401)
+        elif session.get('user')[3] == 'teacher':
+            if request.method == 'POST':
+                name = request.form.get('name')
+                code = request.form.get('code')
+                class_session = request.form.get('session')
+                days = request.form.get('days')
+                start = request.form.get('start')
+                end = request.form.get('end')
+                description = request.form.get('description')
+
+                con = db.get_db()
+                cur = con.cursor()
+
+                cur.execute("""
+                    INSERT INTO courses (name, course_code, day, start_time, end_time, session, description)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s);
+                """,
+                (name, code, days, start, end, class_session, description))
+
+                con.commit()
+
+                cur.execute("""
+                    SELECT courses.id FROM courses;
+                """)
+
+                new_course = cur.fetchall()[-1]
+
+                cur.execute("""
+                    INSERT INTO user_courses (user_id, course_id)
+                    VALUES (%s, %s)
+                """,
+                (session.get('user')[0], new_course[0]))
+
+                con.commit()
+
+                cur.close()
+                con.close()
+
+                return render_template('add_courses.html')
+            else:
+                return render_template('add_courses.html')
 
     return app
