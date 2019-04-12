@@ -1,7 +1,4 @@
-from functools import wraps
-from flask import Flask, render_template, flash, session, url_for, redirect, request, g
-from werkzeug.security import check_password_hash
-
+from flask import Flask, render_template
 from .auth import login_required
 
 def create_app(test_config=None):

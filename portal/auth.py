@@ -28,7 +28,6 @@ def load_logged_in_user():
         cursor.execute(
             'SELECT * FROM user WHERE id = %s', (user_id,)
         )
-
         g.user = cursor.fetchone()
         cursor.close()
         conn.close()
@@ -49,6 +48,7 @@ def index():
         )
         # set the user to be only the ID
         user = cursor.fetchone()
+        print(user)
 
         if user is None:
             # throw an error
@@ -58,8 +58,10 @@ def index():
             error = 'Incorrect password'
             flash(error)
         else:
+            print(user)
             session.clear()
-            session['user'] = user[0]
+            session['user'] = user
+            print(session)
             cursor.close()
             conn.close()
 
