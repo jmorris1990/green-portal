@@ -28,17 +28,15 @@ def test_add_courses(client, auth):
 def test_edit_courses(client, auth):
     user = auth.login_student()
     response = client.get('/courses/edit/1')
-    assert response.status_code == 404
+    assert response.status_code == 401
 
     user = auth.login_teacher()
     response = client.get('/courses/edit/1')
-    assert b'<form method="POST">' in response.data
-    assert b'<label for="name">' not in response.data
-    assert b'<input type="text" name="name"' not in response.data
-    assert b'<label for="time">' in response.data
-    assert b'<input type="text" name="time"' in response.data
-
-    response = client.post('/courses/edit/1', data=dict(name="Edited Course", code="EX 170", session="A", days="TR", start="9:00:00", end="9:50:00", description="bar"))
+    assert b'<form method="POST"' in response.data
+    assert b'<input type="text" name="name"' in response.data
+    assert b'<input type="text" name="start"' in response.data
+    
+    response = client.post('/courses/edit/1', data=dict(name="Edited Course", code="EX 170", session="A", days="TR", start="9:00:00", end="9:50:00", description="baz", id=1))
     assert response.status_code == 200
     
     response = client.get('/courses')

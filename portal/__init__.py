@@ -131,5 +131,59 @@ def create_app(test_config=None):
                 return render_template('add_courses.html')
             else:
                 return render_template('add_courses.html')
+            
+
+    @app.route('/courses/edit/<int:id>', methods=['GET', 'POST'])
+    @login_required
+    def edit_courses(id):
+        if session.get('user')[3] != 'teacher':
+            return make_response("Unauthorized", 401)
+        elif session.get('user')[3] == 'teacher':
+            if request.method == 'POST':
+                name = request.form.get('name')
+                code = request.form.get('code')
+                class_session = request.form.get('session')
+                days = request.form.get('days')
+                start = request.form.get('start')
+                end = request.form.get('end')
+                description = request.form.get('description')
+
+                con = db.get_db()
+                cur = con.cursor()
+
+                cur.execute("""
+                    UPDATE courses
+                    SET name = %s,
+                        course_code = %s,
+                        session = %s,
+                        day = %s,
+                        start_time = %s,
+                        end_time = %s,
+                        description = %s
+                    WHERE id = %s;
+                """,
+                (name, code, class_session, days, start, end, description, id))
+
+                cur.close()
+                con.close()
+
+                return render_template('edit_courses.html', info=(name, code, class_session, days, start, end, description, id))
+            
+            else:
+                con = db.get_db()
+                cur = con.cursor()
+
+                cur.execute("""
+                    SELECT name, course_code, session, day, start_time, end_time, description, id FROM courses
+                    WHERE id = %s;
+                """,
+                ([id]))
+
+                form_info = cur.fetchone()
+
+                cur.close()
+                con.close()
+
+                return render_template('edit_courses.html', info=form_info)
 
     return app
