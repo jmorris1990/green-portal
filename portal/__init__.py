@@ -70,15 +70,12 @@ def create_app(test_config=None):
         con = db.get_db()
         cur = con.cursor()
 
-        user_id = session.get('user')[0]
-
         cur.execute("""
-            SELECT courses.id, courses.name FROM usercourses
-            JOIN users ON usercourses.user_id = users.id,
-                 courses ON usercourses.course_id = courses.id
-            WHERE users.id = %s;
+            SELECT courses.id, courses.name FROM courses 
+            JOIN user_courses ON courses.id = user_courses.course_id
+            WHERE user_courses.user_id = %s;
         """,
-        (user_id))
+        ([session.get('user')[0]]))
 
         my_courses = cur.fetchall()
 
