@@ -1,17 +1,5 @@
-from functools import wraps
-from flask import Flask, render_template, flash, session, url_for, redirect, request
-from werkzeug.security import check_password_hash
-
-
-def login_required(view):
-    @wraps(view)
-    def wrapped_view(**kwargs):
-        if session.get('user') is None:
-            return redirect(url_for('.index'))
-
-        return view(**kwargs)
-
-    return wrapped_view
+from flask import Flask, render_template
+from .auth import login_required
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
@@ -30,47 +18,13 @@ def create_app(test_config=None):
     from . import db
     db.init_app(app)
 
-    @app.route('/', methods=('GET', 'POST'))
-    def index():
-        if request.method == 'POST':
-            email = request.form['email']
-            password = request.form['password']
-            #have an error
-            error = None
-            conn = db.get_db()
-            cursor = conn.cursor()
-            cursor.execute(
-                'SELECT * FROM users WHERE email = %s;', (email,)
-            )
-            user = cursor.fetchone()
-            cursor.close()
-            conn.close()
-            if user is None:
-                # throw an error
-                error = 'Incorrect email'
-                flash(error)
-            elif not check_password_hash(user[2], password):
-                error = 'Incorrect password'
-                flash(error)
-            else:
-                session.clear()
-                session['user'] = user
-
-                return redirect(url_for('home'))
-
-        # if a post has happened i want to go to a new template(view)
-        return render_template('index.html')
+    from . import auth
+    app.register_blueprint(auth.bp)
 
     @app.route('/home')
     @login_required
     def home():
         return render_template('home.html')
 
-
-    @app.route('/logout')
-    # @login_required
-    def logout():
-        session.clear()
-        return redirect(url_for('index'))
 
     return app
