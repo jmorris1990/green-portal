@@ -1,10 +1,20 @@
 from functools import wraps
-from flask import Flask, render_template, flash, session, url_for, redirect, request, g, Blueprint
+from flask import render_template, flash, session, url_for, redirect, request, g, Blueprint
 from werkzeug.security import check_password_hash
 
 from . import db
 
 bp = Blueprint('auth', __name__)
+
+def login_required(view):
+    @wraps(view)
+    def wrapped_view(**kwargs):
+        if session.get('user') is None:
+            return redirect(url_for('auth.index'))
+
+        return view(**kwargs)
+
+    return wrapped_view
 
 @bp.before_app_request
 def load_logged_in_user():
@@ -13,10 +23,15 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        g.user = get_db().execute(
-            'SELECT * FROM user WHERE id = ?', (user_id,)
-        ).fetchone()
+        conn = get_db()
+        cursor = conn.cursor()
+        g.user = cursor.execute(
+            'SELECT * FROM user WHERE id = %s', (user_id,)
+        )
 
+        user = g.user.fetchone()
+        cursor.close()
+        conn.close()
 
 
 

@@ -2,18 +2,7 @@ from functools import wraps
 from flask import Flask, render_template, flash, session, url_for, redirect, request, g
 from werkzeug.security import check_password_hash
 
-
-# before app request blueprint
-def login_required(view):
-    @wraps(view)
-    def wrapped_view(**kwargs):
-        if session.get('user') is None:
-            return redirect(url_for('auth.index'))
-
-        return view(**kwargs)
-
-    return wrapped_view
-
+from .auth import login_required
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
@@ -29,12 +18,11 @@ def create_app(test_config=None):
     else:
         app.config.from_mapping(test_config)
 
+    from . import db
+    db.init_app(app)
 
     from . import auth
     app.register_blueprint(auth.bp)
-
-    from . import db
-    db.init_app(app)
 
     @app.route('/home')
     @login_required
