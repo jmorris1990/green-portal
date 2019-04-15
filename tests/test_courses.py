@@ -1,6 +1,7 @@
 def test_courses(client, auth):
     user = auth.login_student()
     response = client.get('/courses')
+    print(response.data)
     assert b'<ul class="courses">' in response.data
     assert b'<li>Course 1</li>' in response.data
 

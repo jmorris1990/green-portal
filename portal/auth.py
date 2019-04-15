@@ -9,7 +9,7 @@ bp = Blueprint('auth', __name__)
 def login_required(view):
     @wraps(view)
     def wrapped_view(**kwargs):
-        if session.get('user') is None:
+        if g.user is None:
             return redirect(url_for('auth.index'))
 
         return view(**kwargs)
@@ -23,7 +23,7 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        conn = get_db()
+        conn = db.get_db()
         cursor = conn.cursor()
         cursor.execute(
             'SELECT * FROM user WHERE id = %s', (user_id,)
@@ -69,7 +69,7 @@ def index():
 
 
 @bp.route('/logout')
-# @login_required
+@login_required
 def logout():
     session.clear()
     return redirect(url_for('auth.index'))
