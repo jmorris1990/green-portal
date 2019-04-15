@@ -7,7 +7,7 @@
     <a href="/courses">My Courses</a>
 </section>
 <section>
-    <form method="POST" action="{{ url_for('edit_courses', id=info[7]) }}">
+    <form method="POST">
         <label for="name">
             Name:
             <input type="text" name="name" id="name" value="{{ info[0] }}">
@@ -18,7 +18,7 @@
         </label>
         <label for="session">
             Session Letter:
-            <input type="text" name="session" id="session" value="{{ info[2] }}">
+            <input type="text" name="class_session" id="session" value="{{ info[2] }}">
         </label>
         <label for="days">
             Days (MTWRF):

@@ -94,7 +94,7 @@ def create_app(test_config=None):
             if request.method == 'POST':
                 name = request.form.get('name')
                 code = request.form.get('code')
-                class_session = request.form.get('session')
+                class_session = request.form.get('class_session')
                 days = request.form.get('days')
                 start = request.form.get('start')
                 end = request.form.get('end')
@@ -140,13 +140,13 @@ def create_app(test_config=None):
             return make_response("Unauthorized", 401)
         elif session.get('user')[3] == 'teacher':
             if request.method == 'POST':
-                name = request.form.get('name')
-                code = request.form.get('code')
-                class_session = request.form.get('session')
-                days = request.form.get('days')
-                start = request.form.get('start')
-                end = request.form.get('end')
-                description = request.form.get('description')
+                name = request.form['name']
+                code = request.form['code']
+                class_session = request.form['class_session']
+                days = request.form['days']
+                start = request.form['start']
+                end = request.form['end']
+                description = request.form['description']
 
                 con = db.get_db()
                 cur = con.cursor()
@@ -164,6 +164,8 @@ def create_app(test_config=None):
                 """,
                 (name, code, class_session, days, start, end, description, id))
 
+                con.commit()
+
                 cur.close()
                 con.close()
 
@@ -177,7 +179,7 @@ def create_app(test_config=None):
                     SELECT name, course_code, session, day, start_time, end_time, description, id FROM courses
                     WHERE id = %s;
                 """,
-                ([id]))
+                (id,))
 
                 form_info = cur.fetchone()
 
