@@ -3,7 +3,6 @@ from flask import session, g
 def test_login(client, auth):
     assert client.get('/').status_code == 200
     response = auth.login_teacher()
-    print(response.data)
     assert response.status_code == 302
 
 
@@ -32,7 +31,6 @@ def test_home(client, auth):
 
     user = auth.login_teacher()
     response = client.get('/home')
-    print(response.data)
     assert b'<h1>Welcome to the Portal</h1>' in response.data
 
     user = auth.login_student()
