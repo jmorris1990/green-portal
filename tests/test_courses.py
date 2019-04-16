@@ -1,9 +1,11 @@
+from flask import session, g
+
 def test_courses(client, auth):
-    user = auth.login_student()
-    response = client.get('/courses')
-    print(response.data)
-    assert b'<ul class="courses">' in response.data
-    assert b'<li>Course 1</li>' in response.data
+    with client:
+        user = auth.login_student()
+        response = client.get('/courses')
+        assert b'<ul class="courses">' in response.data
+        assert b'<li>Course 1</li>' in response.data
 
     user = auth.login_teacher()
     response = client.get('/courses')

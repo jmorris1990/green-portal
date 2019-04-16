@@ -16,22 +16,22 @@ def courses():
         JOIN user_courses ON courses.id = user_courses.course_id
         WHERE user_courses.user_id = %s;
     """,
-    ([g.user['id']]))
+    ([g.user[0]]))
 
     my_courses = cur.fetchall()
 
     cur.close()
     con.close()
 
-    return render_template('courses.html', role=g.user['role'], courses=my_courses)
+    return render_template('courses.html', role=g.user[3], courses=my_courses)
 
 
 @bp.route('/courses/add', methods=['GET', 'POST'])
 @login_required
 def add_courses():
-    if g.user['role'] == 'teacher':
+    if g.user[3] != 'teacher':
         return make_response("Unauthorized", 401)
-    elif g.user['role'] == 'teacher':
+    elif g.user[3] == 'teacher':
         if request.method == 'POST':
             name = request.form.get('name')
             code = request.form.get('code')
@@ -62,7 +62,7 @@ def add_courses():
                 INSERT INTO user_courses (user_id, course_id)
                 VALUES (%s, %s)
             """,
-            (g.user['id'], new_course[0]))
+            (g.user[0], new_course[0]))
 
             con.commit()
 
@@ -77,9 +77,9 @@ def add_courses():
 @bp.route('/courses/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_courses(id):
-    if g.user['role'] != 'teacher':
+    if g.user[3] != 'teacher':
         return make_response("Unauthorized", 401)
-    elif g.user['role'] == 'teacher':
+    elif g.user[3] == 'teacher':
         if request.method == 'POST':
             name = request.form['name']
             code = request.form['code']
