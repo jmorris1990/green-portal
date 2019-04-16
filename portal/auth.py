@@ -18,7 +18,7 @@ def login_required(view):
 
 @bp.before_app_request
 def load_logged_in_user():
-    user_id = session.get('user')
+    user_id = session.get('user_id')
 
     if user_id is None:
         g.user = None
@@ -26,7 +26,7 @@ def load_logged_in_user():
         conn = db.get_db()
         cursor = conn.cursor()
         cursor.execute(
-            'SELECT * FROM users WHERE id = %s', (user_id[0],)
+            'SELECT * FROM users WHERE id = %s', (user_id,)
         )
         g.user = cursor.fetchone()
         cursor.close()
@@ -58,7 +58,7 @@ def index():
             flash(error)
         else:
             session.clear()
-            session['user'] = user
+            session['user_id'] = user[0]
             cursor.close()
             conn.close()
 
