@@ -1,4 +1,4 @@
-from flask import session
+from flask import session, g
 
 def test_login(client, auth):
     assert client.get('/').status_code == 200

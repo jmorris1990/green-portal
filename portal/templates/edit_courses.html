@@ -1,0 +1,43 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Edit Courses{% endblock %}
+
+{% block content %}
+<section>
+    <a href="/courses">My Courses</a>
+</section>
+<section>
+    <form method="POST">
+        <label for="name">
+            Name:
+            <input type="text" name="name" id="name" value="{{ info[0] }}">
+        </label>
+        <label for="code">
+            Course Code:
+            <input type="text" name="code" id="code" value="{{ info[1] }}">
+        </label>
+        <label for="session">
+            Session Letter:
+            <input type="text" name="class_session" id="session" value="{{ info[2] }}">
+        </label>
+        <label for="days">
+            Days (MTWRF):
+            <input type="text" name="days" id="days" value="{{ info[3] }}">
+        </label>
+        <label for="start">
+            Start Time:
+            <input type="text" name="start" id="start" value="{{ info[4] }}">
+        </label>
+        <label for="end">
+            End Time:
+            <input type="text" name="end" id="end" value="{{ info[5] }}">
+        </label>
+        <label for="description">
+            Class Description:
+            <input type="text" name="description" id="description" value="{{ info[6] }}">
+        </label>
+
+        <input type="submit" name="submit" id="submit" value="Submit">
+    </form>
+</section>
+{% endblock %}
