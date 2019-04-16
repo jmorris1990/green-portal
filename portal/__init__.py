@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from .auth import login_required
 
+
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
 
@@ -20,6 +21,9 @@ def create_app(test_config=None):
 
     from . import auth
     app.register_blueprint(auth.bp)
+
+    from . import courses
+    app.register_blueprint(courses.bp)
 
     @app.route('/home')
     @login_required
