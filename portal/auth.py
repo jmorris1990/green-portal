@@ -26,7 +26,7 @@ def load_logged_in_user():
         conn = get_db()
         cursor = conn.cursor()
         cursor.execute(
-            'SELECT * FROM user WHERE id = %s', (user_id,)
+            'SELECT * FROM user WHERE id = %s', (user_id[0],)
         )
         g.user = cursor.fetchone()
         cursor.close()
@@ -36,6 +36,7 @@ def load_logged_in_user():
 
 @bp.route('/', methods=('GET', 'POST'))
 def index():
+    print(g.user)
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -48,7 +49,7 @@ def index():
         )
         # set the user to be only the ID
         user = cursor.fetchone()
-        
+
         if user is None:
             # throw an error
             error = 'Incorrect email'
