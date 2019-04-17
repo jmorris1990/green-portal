@@ -8,21 +8,24 @@ bp = Blueprint('courses', __name__)
 @bp.route('/courses')
 @login_required
 def courses():
-    con = db.get_db()
-    cur = con.cursor()
+    if g.user[3] != 'teacher':
+        return make_response("Unauthorized", 401)
+    else:
+        con = db.get_db()
+        cur = con.cursor()
 
-    cur.execute("""
-        SELECT id, name FROM courses 
-        WHERE teacher_id = %s;
-    """,
-    ([g.user[0]]))
+        cur.execute("""
+            SELECT id, name FROM courses 
+            WHERE teacher_id = %s;
+        """,
+        ([g.user[0]]))
 
-    my_courses = cur.fetchall()
+        my_courses = cur.fetchall()
 
-    cur.close()
-    con.close()
+        cur.close()
+        con.close()
 
-    return render_template('courses.html', role=g.user[3], courses=my_courses)
+        return render_template('courses.html', role=g.user[3], courses=my_courses)
 
 
 @bp.route('/courses/add', methods=['GET', 'POST'])
@@ -90,7 +93,7 @@ def edit_courses(id):
 
             cur.close()
             con.close()
-            
+
             return redirect(url_for('courses.courses'))
         
         else:

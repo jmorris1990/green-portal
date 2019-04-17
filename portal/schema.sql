@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS courses;
+DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
     id bigserial PRIMARY KEY,
