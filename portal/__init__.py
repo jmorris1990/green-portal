@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, g
 from .auth import login_required
 
 
@@ -28,7 +28,7 @@ def create_app(test_config=None):
     @app.route('/home')
     @login_required
     def home():
-        return render_template('home.html')
+        return render_template('home.html', role=g.user[3])
 
 
     return app
