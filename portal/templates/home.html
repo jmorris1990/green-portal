@@ -5,5 +5,7 @@
 {% block content %}
 <h1>Welcome to the Portal</h1>
 <button><a href="/logout"> logout </a></button>
-<button><a href="/courses"> Courses </a></button>
+{% if role == 'teacher' %}
+<a href="/courses">Courses</a>
+{% endif %}
 {% endblock %}
