@@ -124,7 +124,16 @@ def edit_courses(id):
 
             form_info = cur.fetchone()
 
+
+            cur.execute("""
+                SELECT session_name, course_id FROM sessions
+                WHERE course_id = %s;
+            """,(id,))
+
+            my_sessions = cur.fetchall()
             cur.close()
             con.close()
 
-            return render_template('edit_courses.html', info=form_info)
+
+
+            return render_template('edit_courses.html', info=form_info, sessions=my_sessions)

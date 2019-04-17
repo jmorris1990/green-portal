@@ -40,4 +40,13 @@
         <input type="submit" name="submit" id="submit" value="Submit">
     </form>
 </section>
+<section>
+    <a href="sessions/add">Add Session</a>
+    <ul>
+    {% for session in sessions %}
+        <li>{{ session[0] }}</li>
+    {% endfor %}
+    </ul>
+
+</section>
 {% endblock %}
