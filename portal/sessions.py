@@ -8,5 +8,5 @@ bp = Blueprint('sessions', __name__)
 @bp.route('/add-session')
 @login_required
 def add_session():
-    pass
+    return 'this is the session bp'
 

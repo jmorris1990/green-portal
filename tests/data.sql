@@ -14,3 +14,10 @@ VALUES (1, 1),
        (2, 1),
        (1, 2),
        (2, 2);
+
+INSERT INTO sessions (course_id, session_name, day, start_time, end_time)
+VALUES  (1, 'A', 'MTWRF', '12:00:00', '16:30:00'),
+        (1, 'C', 'MWF', '8:00:00', '9:50:00'),
+        (2, 'A', 'TWF', '12:00:00', '13:00:00'),
+        (2, 'B', 'M', '12:00:00', '15:00:00');
+
