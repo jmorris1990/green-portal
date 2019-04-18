@@ -3,6 +3,9 @@
 {% block title %}Sessions{% endblock %}
 
 {% block content %}
+<section>
+    <a href="/home">Home</a>
+</section>
 <ul>
     {% for session in sessions_list %}
     <li>{{ session[0] }} {{ session[1] }} {{ session[2] }} {{ session[3] }} {{ session[4] }}-{{ session[5] }}</li>
