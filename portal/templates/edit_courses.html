@@ -1,5 +1,7 @@
 {% extends 'layouts/base.html' %}
 
+{% block styles %}<link rel="stylesheet" href="../../static/styles.css" type="text/css" />{% endblock %}
+
 {% block title %}Edit Courses{% endblock %}
 
 {% block content %}
@@ -18,7 +20,7 @@
         </label>
         <label for="description">
             Class Description:
-            <input type="text" name="description" id="description" value="{{ info[6] }}">
+            <input type="text" name="description" id="description" value="{{ info[2] }}">
         </label>
 
         <input type="submit" name="submit" id="submit" value="Submit">

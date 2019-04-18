@@ -5,7 +5,27 @@ from .auth import login_required
 
 bp = Blueprint('sessions', __name__)
 
+<<<<<<< HEAD
 @bp.route('/sessions/add/<int:course_id>', methods=['GET', 'POST'])
+=======
+@bp.route('/sessions')
+@login_required
+def sessions():
+    con = db.get_db()
+    cur = con.cursor()
+
+    cur.execute("""
+        SELECT courses.name, courses.course_code, user_sessions.session_name, user_sessions.day, user_sessions.start_time, user_sessions.end_time FROM user_sessions
+        JOIN sessions ON user_sessions.session_id = sessions.id
+        JOIN courses ON courses.id = sessions.course_id
+        WHERE user_sessions.id = %s;
+    """,
+    (g.user[0],))
+
+    
+
+@bp.route('/sessions/add/<int:course_id>')
+>>>>>>> list-sessions
 @login_required
 def add_session(course_id):
     

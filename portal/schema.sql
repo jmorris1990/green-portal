@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS courses CASCADE;
 DROP TABLE IF EXISTS user_courses CASCADE;
 DROP TABLE IF EXISTS sessions CASCADE;
+DROP TABLE IF EXISTS user_sessions CASCADE;
 
 
 CREATE TABLE users (
@@ -28,4 +29,10 @@ CREATE TABLE sessions (
     start_time time NOT NULL,
     end_time time NOT NULL
     
+);
+
+CREATE TABLE user_sessions (
+    id bigserial PRIMARY KEY,
+    user_id bigint REFERENCES users (id),
+    session_id bigint REFERENCES sessions (id)
 );
