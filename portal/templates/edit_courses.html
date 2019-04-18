@@ -30,7 +30,7 @@
     <a href="/sessions/add/{{ info[3] }}">Add Session</a>
     <ul>
     {% for session in sessions %}
-        <li>Session: {{ session[0] }}, Days: {{ session[2] }},  Start: {{ session[3] }},  End: {{ session[4] }}</li>
+        <li>Session: {{ session[1] }}, Days: {{ session[3] }},  Start: {{ session[4] }},  End: {{ session[5] }} <a href="/sessions/add_student/{{ session[0] }}">Add Students</a></li>
     {% endfor %}
     </ul>
 
