@@ -1,16 +1,16 @@
 def test_assignments(client, auth):
     user = auth.login_teacher()
-    response = client.get('/assignments')
+    response = client.get('sessions/1/assignments')
 
     assert b'<ul' in response.data
     assert b'<li>' in response.data
     assert b'<span>Assignment 1</span>' in response.data
-    assert b'<p>This is a assignment 1</p>' in response.data
+    assert b'<p>This is assignment 1</p>' in response.data
 
 def test_create_assignments(client, auth):
     user = auth.login_teacher()
 
-    response = client.get('/assignments/create')
+    response = client.get('sessions/1/assignments/create')
     assert b'<form method="POST"' in response.data
 
     response = client.post('/assignments/create', data=dict(name='New Assignment', description='This is a new assignment.'))

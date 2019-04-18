@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS courses CASCADE;
 DROP TABLE IF EXISTS user_courses CASCADE;
 DROP TABLE IF EXISTS sessions CASCADE;
 DROP TABLE IF EXISTS user_sessions CASCADE;
+DROP TABLE IF EXISTS assignments;
 
 
 CREATE TABLE users (
@@ -35,4 +36,11 @@ CREATE TABLE user_sessions (
     id bigserial PRIMARY KEY,
     user_id bigint REFERENCES users (id),
     session_id bigint REFERENCES sessions (id)
+);
+
+CREATE TABLE assignments (
+    id bigserial PRIMARY KEY,
+    session_id bigint REFERENCES sessions (id),
+    name varchar(100),
+    description text
 );

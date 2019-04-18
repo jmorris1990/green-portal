@@ -22,3 +22,7 @@ VALUES (1, 1),
        (1, 4),
        (2, 1),
        (2, 3);
+
+INSERT INTO assignments (session_id, name, description)
+VALUES (1, 'Assignment 1', 'This is assignment 1'),
+       (1, 'Assignment 2', 'This is assignment 2');
