@@ -12,14 +12,17 @@ def sessions():
     cur = con.cursor()
 
     cur.execute("""
-        SELECT courses.name, courses.course_code, user_sessions.session_name, user_sessions.day, user_sessions.start_time, user_sessions.end_time FROM user_sessions
+        SELECT courses.name, courses.course_code, sessions.session_name, sessions.day, sessions.start_time, sessions.end_time FROM user_sessions
         JOIN sessions ON user_sessions.session_id = sessions.id
         JOIN courses ON courses.id = sessions.course_id
-        WHERE user_sessions.id = %s;
+        JOIN users ON user_sessions.user_id = users.id
+        WHERE users.id = %s;
     """,
     (g.user[0],))
 
-    
+    sessions_list = cur.fetchall()
+
+    return render_template('sessions.html', sessions_list=sessions_list)
 
 @bp.route('/sessions/add/<int:course_id>')
 @login_required
