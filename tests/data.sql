@@ -8,3 +8,9 @@ VALUES ('teacher@stevenscollege.edu', 'pbkdf2:sha256:150000$CiF5gKcu$7e96aa72c1e
 INSERT INTO courses (name, course_code, description, teacher_id)
 VALUES ('Course 1', 'CSET 180', 'Test Course', 1),
        ('Course 2', 'CSET 170', 'Test Course Number 2', 1);
+
+INSERT INTO sessions (course_id, session_name, day, start_time, end_time)
+VALUES  (1, 'A', 'MTWRF', '12:00:00', '16:30:00'),
+        (1, 'C', 'MWF', '8:00:00', '9:50:00'),
+        (2, 'A', 'TWF', '12:00:00', '13:00:00'),
+        (2, 'B', 'M', '12:00:00', '15:00:00');
