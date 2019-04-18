@@ -21,6 +21,9 @@ def sessions():
 
     sessions_list = cur.fetchall()
 
+    cur.close()
+    con.close()
+
     return render_template('sessions.html', sessions_list=sessions_list)
 
 @bp.route('/sessions/add/<int:course_id>')
