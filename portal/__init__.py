@@ -28,6 +28,9 @@ def create_app(test_config=None):
     from . import sessions
     app.register_blueprint(sessions.bp)
 
+    from . import assignments
+    app.register_blueprint(assignments.bp)
+
     @app.route('/home')
     @login_required
     def home():

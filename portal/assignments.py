@@ -48,6 +48,7 @@ def create_assignments(session_id):
             cur.close()
             con.close()
 
+            # return redirect(url_for('assignments.assignments', session_id=session_id))
             return render_template('create_assignments.html')
         else:
             return render_template('create_assignments.html')
