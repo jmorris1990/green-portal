@@ -12,7 +12,7 @@ def sessions():
     cur = con.cursor()
 
     cur.execute("""
-        SELECT courses.name, courses.course_code, sessions.session_name, sessions.day, sessions.start_time, sessions.end_time FROM user_sessions
+        SELECT courses.name, courses.course_code, sessions.session_name, sessions.day, sessions.start_time, sessions.end_time, sessions.id FROM user_sessions
         JOIN sessions ON user_sessions.session_id = sessions.id
         JOIN courses ON courses.id = sessions.course_id
         WHERE user_sessions.user_id = %s;
