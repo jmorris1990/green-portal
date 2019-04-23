@@ -110,7 +110,7 @@ def edit_courses(id):
 
 
             cur.execute("""
-                SELECT session_name, course_id FROM sessions
+                SELECT id, session_name, course_id, day, start_time, end_time  FROM sessions
                 WHERE course_id = %s;
             """,(id,))
 
