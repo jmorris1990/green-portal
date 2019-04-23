@@ -8,7 +8,15 @@
     <a href="/courses">My Courses</a>
 </section>
 <section>
-    <form method="POST">
+    <form method="POST" id="add_session">
+        <label for="course_id">
+            Parent Course:
+            <select name="course_id" id="course_id" form="add_session">
+                {% for course in courses %}
+                <option value="{{ course[0] }}">{{ course[1] }}</option>
+                {% endfor %}
+            </select>
+        </label>
         <label for="session_name">
             Session:
             <input type="text" name="session_name" id="session_name">
