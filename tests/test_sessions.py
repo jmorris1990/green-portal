@@ -8,3 +8,13 @@ def test_sessions(client, auth):
     print(response.data)
     assert b'<li>Course 1 CSET 180 A MTWRF 12:00:00-16:30:00' in response.data
     assert b'<li>Course 1 CSET 180 C MWF 12:00:00-13:00:00' not in response.data
+
+def test_add_session(client, auth):
+    user = auth.login_teacher()
+    response = client.get('/sessions/add/1')
+
+    assert response.status_code == 200
+
+    response = client.post('/sessions/add/1', data=dict(session_name="B", day="MWF", start_time="12:00", end_time="14:00"))
+
+    assert response.status_code == 302
