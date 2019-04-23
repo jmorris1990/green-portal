@@ -57,7 +57,7 @@ def add_student(session_id):
         students = cur.fetchall()
         # TODO select all users sessions where session id = current session id
         cur.execute("""
-            SELECT users.id, users.email, user_sessions.session_id FROM user_sessions
+            SELECT users.id, users.email FROM user_sessions
             JOIN users ON user_sessions.user_id = users.id
             WHERE user_sessions.session_id = %s
             AND users.role = 'student';
@@ -69,15 +69,18 @@ def add_student(session_id):
         cur.close()
         con.close()
 
-       # unadded_students = somefunc(students, added_students) 
 
-        x = students + added_students
-        y = set(x)
-        print(y)
+        def filter_unadded(students, added_students):
+            unadded_students = []
+            for student in students:
+                if student not in added_students:
+                    unadded_students.append(student)
+            return unadded_students
+
+        unadded_students = filter_unadded(students, added_students) 
 
 
-
-        return render_template('add_student.html', session_id=session_id, unadded_students=y, added_students=added_students)
+        return render_template('add_student.html', session_id=session_id, unadded_students=unadded_students, added_students=added_students)
 
 @bp.route('/sessions/add_student/<int:session_id>/new/<int:user_id>')
 @login_required
@@ -87,6 +90,11 @@ def add_new_student(session_id, user_id, methods=['GET']):
     elif g.user[3] == 'teacher':
         con = db.get_db()
         cur = con.cursor() 
+
+        # cur.execute(""" 
+        #     SELECT user_id, session_id FROM user_sessions 
+        #     WHERE session_id = %s
+        #     """, ())
 
         cur.execute(""" 
             INSERT INTO user_sessions (user_id, session_id)
