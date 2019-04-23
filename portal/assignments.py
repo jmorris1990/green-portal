@@ -22,7 +22,7 @@ def assignments(session_id):
     cur.close()
     con.close()
 
-    return render_template('assignments.html', assignments_list=assignments_list)
+    return render_template('assignments.html', assignments_list=assignments_list, role=g.user[3])
 
 @bp.route('/sessions/<int:session_id>/assignments/create', methods=['GET', 'POST'])
 @login_required

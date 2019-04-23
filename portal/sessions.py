@@ -5,7 +5,7 @@ from .auth import login_required
 
 bp = Blueprint('sessions', __name__)
 
-@bp.route('/sessions/add/<int:course_id>', methods=['GET', 'POST'])
+@bp.route('/sessions', methods=['GET'])
 @login_required
 def sessions():
     con = db.get_db()
@@ -26,7 +26,8 @@ def sessions():
 
     return render_template('sessions.html', sessions_list=sessions_list)
 
-    
+@bp.route('/sessions/add/<int:course_id>', methods=['GET', 'POST'])
+@login_required    
 def add_session(course_id):
     
     if g.user[3] != 'teacher':
@@ -45,9 +46,29 @@ def add_session(course_id):
 
             cur.execute("""
                 INSERT INTO sessions (course_id, session_name, day, start_time, end_time)
-                VALUES (%s, %s, %s, %s, %s)
+                VALUES (%s, %s, %s, %s, %s);
             """,
             (course_id, session_name, day, start_time, end_time))
+
+            con.commit()
+
+            cur.execute("""
+                SELECT id FROM sessions
+                WHERE course_id = %s AND
+                      session_name = %s AND
+                      day = %s AND
+                      start_time = %s AND
+                      end_time = %s;
+            """,
+            (course_id, session_name, day, start_time, end_time))
+
+            new_session = cur.fetchone()
+
+            cur.execute("""
+                INSERT INTO user_sessions (user_id, session_id)
+                VALUES (%s, %s);
+            """,
+            (g.user[0], new_session[0]))
 
             con.commit()
 
