@@ -1,0 +1,24 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Add Students{% endblock %}
+
+{% block content %}
+<section>
+    <a href="/home">Home</a>
+    <a href="/courses/edit/{{ session_id }}">Edit</a>
+</section>
+    <h3>Unadded Students</h3>
+    <ul>
+    {% for student in unadded_students %}
+    <li>{{ student[1] }}<a href="/sessions/add_student/{{ session_id }}/new/{{ student[0] }}"> Add</a></li>
+    {% endfor %}
+    </ul>
+<section>
+    <h3>Added Students</h3>
+     <ul>
+    {% for student in added_students %}
+    <li>{{ student[1] }}</li>
+    {% endfor %}
+    </ul>
+</section>
+{% endblock %}
