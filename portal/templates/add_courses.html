@@ -1,5 +1,7 @@
 {% extends 'layouts/base.html' %}
 
+{% block styles %}<link rel="stylesheet" href="../static/styles.css" type="text/css" />{% endblock %}
+
 {% block title %}Add Courses{% endblock %}
 
 {% block content %}
@@ -15,22 +17,6 @@
         <label for="code">
             Course Code:
             <input type="text" name="code" id="code">
-        </label>
-        <label for="session">
-            Session Letter:
-            <input type="text" name="class_session" id="session">
-        </label>
-        <label for="days">
-            Days (MTWRF):
-            <input type="text" name="days" id="days">
-        </label>
-        <label for="start">
-            Start Time:
-            <input type="text" name="start" id="start">
-        </label>
-        <label for="end">
-            End Time:
-            <input type="text" name="end" id="end">
         </label>
         <label for="description">
             Class Description:

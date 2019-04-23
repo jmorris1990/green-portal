@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, g
 from .auth import login_required
 
 
@@ -25,10 +25,16 @@ def create_app(test_config=None):
     from . import courses
     app.register_blueprint(courses.bp)
 
+    from . import sessions
+    app.register_blueprint(sessions.bp)
+
+    from . import assignments
+    app.register_blueprint(assignments.bp)
+
     @app.route('/home')
     @login_required
     def home():
-        return render_template('home.html')
+        return render_template('home.html', role=g.user[3])
 
 
     return app

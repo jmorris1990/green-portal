@@ -1,0 +1,21 @@
+{% extends 'layouts/base.html' %}
+
+{% block styles %}<link rel="stylesheet" href="../../../../static/styles.css" type="text/css">{% endblock %}
+
+{% block title %}Create Assignment{% endblock %}
+
+{% block content %}
+<a href="../assignments">Back</a>
+<form method="POST">
+    <label for="name">
+        Assignment Name:
+        <input type="text" name="name" id="name">
+    </label>
+    <label for="description">
+        Assignment Description:
+        <input type="text" name="description" id="description">
+    </label>
+
+    <input type="submit" name="submit" id="submit" value="Submit">
+</form>
+{% endblock %}

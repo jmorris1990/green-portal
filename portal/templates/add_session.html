@@ -1,0 +1,32 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Add Session{% endblock %}
+
+{% block content %}
+
+<section>
+    <a href="/courses">My Courses</a>
+</section>
+<section>
+    <form method="POST">
+        <label for="session_name">
+            Session:
+            <input type="text" name="session_name" id="session_name">
+        </label>
+        <label for="day">
+            Day:
+            <input type="text" name="day" id="day">
+        </label>
+        <label for="start_time">
+            Start Time:
+            <input type="text" name="start_time" id="start_time">
+        </label>
+        <label for="end_time">
+            End Time:
+            <input type="text" name="end_time" id="end_time">
+        </label>
+
+        <input type="submit" name="submit" id="submit" value="Submit">
+    </form>
+</section>
+{% endblock %}
