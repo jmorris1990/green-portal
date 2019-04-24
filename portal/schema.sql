@@ -28,8 +28,8 @@ CREATE TABLE sessions (
     course_id bigserial REFERENCES courses (id),
     session_name varchar(2),
     day varchar(7) NOT NULL, -- M T W R F S U
-    start_time time NOT NULL,
-    end_time time NOT NULL
+    start_time varchar(20) NOT NULL,
+    end_time varchar(20) NOT NULL
     
 );
 
