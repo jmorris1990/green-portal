@@ -6,7 +6,10 @@
 
 {% block content %}
 <a href="/sessions">Sessions</a>
-{% if role == 'teacher' %}<a href="./assignments/create">Create</a>{% endif %}
+{% if role == 'teacher' %}
+<a href="./assignments/create">Create</a>
+<a href="/{{ assignments_list[2] }}/submissions">View Submissions</a>
+{% endif %}
 <ul>
     {% for assignment in assignments_list %}
     <li>
