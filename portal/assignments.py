@@ -12,7 +12,7 @@ def assignments(session_id):
     cur = con.cursor()
 
     cur.execute("""
-        SELECT name, description FROM assignments
+        SELECT name, description, id FROM assignments
         WHERE session_id = %s;
     """,
     (session_id,))

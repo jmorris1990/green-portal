@@ -17,18 +17,24 @@ def view_assignments(assignment_id):
 
         cur.execute(""" 
             SELECT session_id FROM assignments
-            WHERE id = %s
+            WHERE id = %s;
             """,(assignment_id,))
 
         session_id = cur.fetchone()
 
         cur.execute("""
             SELECT user_id FROM user_sessions
-            WHERE session_id = %s; 
-            AND role = 'student' """
+            WHERE session_id = %s
+            AND role = 'student'; """
             ,(session_id,))
 
         student_id = cur.fetchall()
+
+        cur.execute(""" 
+            SELECT email FROM users
+            WHERE id = %s;
+            """)
+        student_emails = cur.fetchall()
 
         cur.execute("""
                     SELECT content, points_earned FROM submissions
@@ -43,4 +49,4 @@ def view_assignments(assignment_id):
         cur.close()
         con.close()
 
-        return render_template('view_submissions.html', submission_list=submission_list, role=g.user[3])
+        return render_template('view_submissions.html', submission_list=submission_list, student_emails=student_emails, role=g.user[3])
