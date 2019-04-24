@@ -1,11 +1,13 @@
 {% extends 'layouts/base.html' %}
 
+{% block styles %}<link rel="stylesheet" href="../../static/styles.css" type="text/css" />{% endblock %}
+
 {% block title %}Add Session{% endblock %}
 
 {% block content %}
 
 <section>
-    <a href="/courses">My Courses</a>
+    <a href="/sessions">My Sessions</a>
 </section>
 <section>
     <form method="POST" id="add_session">
