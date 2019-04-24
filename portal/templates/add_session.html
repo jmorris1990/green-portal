@@ -33,12 +33,18 @@
             End Time:
             <input type="text" name="end_time" id="end_time">
         </label>
-        <label for="added_students">
-            Students in Class:
-            {% for student in students %}
-            <input type="checkbox" name="student{{ student[0] }}" value="{{ student[0] }}"> {{ student[1] }}
-            {% endfor %}
-        </label>
+        <section class="student_block">
+            <label for="added_students">
+                Students in Class:
+                <ul>
+                    {% for student in students %}
+                    <li>
+                        <input type="checkbox" name="student{{ student[0] }}" value="{{ student[0] }}"> {{ student[1] }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </label>
+        </section>
 
         <input type="submit" name="submit" id="submit" value="Submit">
     </form>
