@@ -41,7 +41,6 @@ def add_session():
             start_time = request.form.get('start_time')
             end_time = request.form.get('end_time')
 
-
             con = db.get_db()
             cur = con.cursor() 
 
@@ -73,6 +72,25 @@ def add_session():
 
             con.commit()
 
+            copy = request.form.copy()
+
+            copy.pop('course_id')
+            copy.pop('session_name')
+            copy.pop('day')
+            copy.pop('start_time')
+            copy.pop('end_time')
+            if copy.get('submit'):
+                copy.pop('submit')
+
+            for entry in copy:
+                cur.execute("""
+                    INSERT INTO user_sessions (user_id, session_id)
+                    VALUES (%s, %s);
+                """,
+                (copy.get(entry), new_session[0]))
+
+                con.commit()
+
             cur.close()
             con.close()
 
@@ -88,7 +106,14 @@ def add_session():
 
             courses = cur.fetchall()
 
-            return render_template('add_session.html', courses=courses)
+            cur.execute("""
+                SELECT id, email FROM users
+                WHERE role = 'student';
+            """)
+
+            students = cur.fetchall()
+
+            return render_template('add_session.html', courses=courses, students=students)
 
 @bp.route('/sessions/add_student/<int:session_id>')
 @login_required

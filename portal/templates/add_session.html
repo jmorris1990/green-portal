@@ -33,6 +33,12 @@
             End Time:
             <input type="text" name="end_time" id="end_time">
         </label>
+        <label for="added_students">
+            Students in Class:
+            {% for student in students %}
+            <input type="checkbox" name="student{{ student[0] }}" value="{{ student[0] }}"> {{ student[1] }}
+            {% endfor %}
+        </label>
 
         <input type="submit" name="submit" id="submit" value="Submit">
     </form>
