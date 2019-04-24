@@ -11,10 +11,10 @@ def test_sessions(client, auth):
 
 def test_add_session(client, auth):
     user = auth.login_teacher()
-    response = client.get('/sessions/add/1')
+    response = client.get('/sessions/add')
 
     assert response.status_code == 200
 
-    response = client.post('/sessions/add/1', data=dict(session_name="B", day="MWF", start_time="12:00", end_time="14:00"))
+    response = client.post('/sessions/add', data=dict(course_id="1", session_name="B", day="MWF", start_time="12:00", end_time="14:00", student1="1"))
 
     assert response.status_code == 302

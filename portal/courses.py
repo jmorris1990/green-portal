@@ -36,6 +36,7 @@ def add_courses():
     elif g.user[3] == 'teacher':
         if request.method == 'POST':
             name = request.form.get('name')
+            print(name)
             code = request.form.get('code')
             description = request.form.get('description')
 
@@ -108,16 +109,9 @@ def edit_courses(id):
 
             form_info = cur.fetchone()
 
-
-            cur.execute("""
-                SELECT id, session_name, course_id, day, start_time, end_time  FROM sessions
-                WHERE course_id = %s;
-            """,(id,))
-
-            my_sessions = cur.fetchall()
             cur.close()
             con.close()
 
 
 
-            return render_template('edit_courses.html', info=form_info, sessions=my_sessions)
+            return render_template('edit_courses.html', info=form_info)
