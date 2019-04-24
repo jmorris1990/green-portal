@@ -50,5 +50,6 @@ CREATE TABLE submissions (
     id bigserial PRIMARY KEY,
     assignment_id bigint REFERENCES assignments (id),
     student_id bigint REFERENCES students (id),
-    content text
+    content text,
+    points_earned integer
 );
