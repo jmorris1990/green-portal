@@ -44,57 +44,87 @@ def add_session():
             con = db.get_db()
             cur = con.cursor() 
 
-            cur.execute("""
-                INSERT INTO sessions (course_id, session_name, day, start_time, end_time)
-                VALUES (%s, %s, %s, %s, %s);
-            """,
-            (course_id, session_name, day, start_time, end_time))
+            cur.execute(""" 
+                SELECT id FROM courses
+                WHERE id = %s
+                """, (course_id,))
+            
+            current_course_id = cur.fetchone()
 
-            con.commit()
+            if current_course_id == None:
+                flash("You must create a course first.")
+            
+                con = db.get_db()
+                cur = con.cursor()
 
-            cur.execute("""
-                SELECT id FROM sessions
-                WHERE course_id = %s AND
-                      session_name = %s AND
-                      day = %s AND
-                      start_time = %s AND
-                      end_time = %s;
-            """,
-            (course_id, session_name, day, start_time, end_time))
+                cur.execute("""
+                    SELECT id, name FROM courses;
+                """)
 
-            new_session = cur.fetchone()
+                courses = cur.fetchall()
 
-            cur.execute("""
-                INSERT INTO user_sessions (user_id, session_id)
-                VALUES (%s, %s);
-            """,
-            (g.user[0], new_session[0]))
+                cur.execute("""
+                    SELECT id, email FROM users
+                    WHERE role = 'student';
+                """)
 
-            con.commit()
+                students = cur.fetchall()
 
-            copy = request.form.copy()
+                return render_template('add_session.html', courses=courses, students=students)
 
-            copy.pop('course_id')
-            copy.pop('session_name')
-            copy.pop('day')
-            copy.pop('start_time')
-            copy.pop('end_time')
-            if copy.get('submit'):
-                copy.pop('submit')
+            else:
 
-            for entry in copy:
+                cur.execute("""
+                    INSERT INTO sessions (course_id, session_name, day, start_time, end_time)
+                    VALUES (%s, %s, %s, %s, %s);
+                """,
+                (course_id, session_name, day, start_time, end_time))
+
+                con.commit()
+
+                cur.execute("""
+                    SELECT id FROM sessions
+                    WHERE course_id = %s AND
+                        session_name = %s AND
+                        day = %s AND
+                        start_time = %s AND
+                        end_time = %s;
+                """,
+                (course_id, session_name, day, start_time, end_time))
+
+                new_session = cur.fetchone()
+
                 cur.execute("""
                     INSERT INTO user_sessions (user_id, session_id)
                     VALUES (%s, %s);
                 """,
-                (copy.get(entry), new_session[0]))
+                (g.user[0], new_session[0]))
 
                 con.commit()
 
-            cur.close()
-            con.close()
+                copy = request.form.copy()
 
-            return redirect(url_for('sessions.sessions', id=course_id))
+                copy.pop('course_id')
+                copy.pop('session_name')
+                copy.pop('day')
+                copy.pop('start_time')
+                copy.pop('end_time')
+                if copy.get('submit'):
+                    copy.pop('submit')
+
+                for entry in copy:
+                    cur.execute("""
+                        INSERT INTO user_sessions (user_id, session_id)
+                        VALUES (%s, %s);
+                    """,
+                    (copy.get(entry), new_session[0]))
+
+                    con.commit()
+
+                cur.close()
+                con.close()
+
+                return redirect(url_for('sessions.sessions', id=course_id))
 
         else:
             con = db.get_db()
