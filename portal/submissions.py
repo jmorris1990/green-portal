@@ -69,8 +69,9 @@ def view_submissions(assignment_id):
         cur=con.cursor()
 
         cur.execute("""
-        SELECT content, points_earned FROM submissions
-        WHERE assignment_id = %s;
+        SELECT submissions.content, submissions.points_earned, users.email FROM submissions
+        JOIN users ON submissions.student_id = users.id
+        WHERE submissions.assignment_id = %s;
         """, (assignment_id,))
 
         submission_list = cur.fetchall()
