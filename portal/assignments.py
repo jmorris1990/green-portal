@@ -12,7 +12,7 @@ def assignments(session_id):
     cur = con.cursor()
 
     cur.execute("""
-        SELECT name, description FROM assignments
+        SELECT name, description, total_points, id FROM assignments
         WHERE session_id = %s;
     """,
     (session_id,))
@@ -33,10 +33,13 @@ def create_assignments(session_id):
         if request.method == 'POST':
             name = request.form.get('name')
             description = request.form.get('description')
+            total_points = request.form.get('total_points')
 
             con = db.get_db()
             cur = con.cursor()
 
+
+            
             cur.execute(""" 
                 SELECT id FROM sessions
                 WHERE id = %s
@@ -50,11 +53,11 @@ def create_assignments(session_id):
 
             else:
                 cur.execute("""
-                    INSERT INTO assignments (session_id, name, description)
-                    VALUES (%s, %s, %s);
+                INSERT INTO assignments (session_id, name, description, total_points)
+                VALUES (%s, %s, %s, %s);
                 """,
-                (session_id, name, description))
-
+                (session_id, name, description, total_points))
+                 
                 con.commit()
 
                 cur.close()
