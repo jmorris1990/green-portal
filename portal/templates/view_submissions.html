@@ -1,14 +1,14 @@
 {% extends "layouts/base.html" %}
-
+{% block styles %}<link rel="stylesheet" href="../../../../static/styles.css" type="text/css"/>{% endblock %}
 {% block title %} Submissions {% endblock %}
 
 {% block content %}
 
-<a href="/assignments"> Assignments </a>
+<a href="/sessions/{{ session_id }}/assignments"> Assignments </a>
 
 <ul>
   {% for submission in submission_list %}
-<li>{{ submission[0] }} {{ submission[1] }} {{ submission[2] }} <a href="/submissions/{{ submission[3] }}/update">Grade This</a></li>
+<li>{{ submission[0] }} {{ submission[1] }} {{ submission[2] }} <a href="./submissions/{{ submission[3] }}/update">Grade This</a></li>
   {% endfor %}
 </ul>
 
