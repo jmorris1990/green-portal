@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS assignments CASCADE;
 DROP TABLE IF EXISTS submissions CASCADE;
 
 
+
 CREATE TABLE users (
     id bigserial PRIMARY KEY,
     email text UNIQUE NOT NULL,
