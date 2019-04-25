@@ -37,17 +37,29 @@ def create_assignments(session_id):
             con = db.get_db()
             cur = con.cursor()
 
-            cur.execute("""
-                INSERT INTO assignments (session_id, name, description)
-                VALUES (%s, %s, %s);
-            """,
-            (session_id, name, description))
+            cur.execute(""" 
+                SELECT id FROM sessions
+                WHERE id = %s
+                """,(session_id,))
+            
+            current_session_id = cur.fetchone()
 
-            con.commit()
+            if current_session_id == None:
+                flash("Session not found, go back to sessions.")
+                return render_template('create_assignments.html')
 
-            cur.close()
-            con.close()
+            else:
+                cur.execute("""
+                    INSERT INTO assignments (session_id, name, description)
+                    VALUES (%s, %s, %s);
+                """,
+                (session_id, name, description))
 
-            return redirect(url_for('assignments.assignments', session_id=session_id))
+                con.commit()
+
+                cur.close()
+                con.close()
+
+                return redirect(url_for('assignments.assignments', session_id=session_id))
         else:
             return render_template('create_assignments.html')
