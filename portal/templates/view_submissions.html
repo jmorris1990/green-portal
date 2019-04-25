@@ -1,3 +1,15 @@
 {% extends "layouts/base.html" %}
 
 {% block title %} Submissions {% endblock %}
+
+{% block content %}
+
+<a href="/assignments"> Assignments </a>
+
+<ul>
+  {% for submission in submission_list %}
+<li>{{ submission[0] }} {{ submission[1] }}</li>
+  {% endfor %}
+</ul>
+
+{% endblock %}
