@@ -6,7 +6,7 @@ from .auth import login_required
 bp = Blueprint('submissions', __name__)
 
 
-@bp.route('<int:assignment_id>/submissions')
+@bp.route('/view_submissions/<int:assignment_id>')
 @login_required
 def view_assignments(assignment_id):
     if g.user != 'teacher':
