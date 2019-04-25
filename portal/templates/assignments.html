@@ -6,7 +6,10 @@
 
 {% block content %}
 <a href="/sessions">Sessions</a>
-{% if role == 'teacher' %}<a href="./assignments/create">Create</a>{% endif %}
+{% if role == 'teacher' %}
+<a href="./assignments/create">Create</a>
+
+{% endif %}
 <ul>
     {% for assignment in assignments_list %}
     <li>
@@ -16,6 +19,7 @@
             Total Points:
             {{ assignment[2] }}
         </section>
+        <a href="./view_submissions/{{ assignment[3] }}">View Submissions</a>
     </li>
     {% endfor %}
 </ul>
