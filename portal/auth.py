@@ -5,7 +5,7 @@ from werkzeug.security import check_password_hash
 from . import db
 
 bp = Blueprint('auth', __name__)
-
+# force redirect to login page if user isnt logged in
 def login_required(view):
     @wraps(view)
     def wrapped_view(**kwargs):
@@ -15,7 +15,7 @@ def login_required(view):
         return view(**kwargs)
 
     return wrapped_view
-
+# load the user id into the global namespace
 @bp.before_app_request
 def load_logged_in_user():
     user_id = session.get('user_id')
@@ -30,10 +30,9 @@ def load_logged_in_user():
         )
         g.user = cursor.fetchone()
         cursor.close()
-        # conn.close()
+     
 
-
-
+# login page
 @bp.route('/', methods=('GET', 'POST'))
 def index():
 
@@ -58,6 +57,7 @@ def index():
             error = 'Incorrect password'
             flash(error)
         else:
+            # clear existing session and set to logged in user id
             session.clear()
             session['user_id'] = user[0]
             cursor.close()

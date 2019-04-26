@@ -10,7 +10,7 @@ def create_app(test_config=None):
         DB_NAME='portal',
         DB_USER='portal_user',
     )
-
+    # TODO: Create untracked config.py with random secret key for production
     if test_config is None:
         app.config.from_pyfile('config.py', silent=True)
     else:

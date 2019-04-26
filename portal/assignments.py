@@ -5,6 +5,7 @@ from .auth import login_required
 
 bp = Blueprint('assignments', __name__)
 
+# get all assignments that are associated with the session id parameter in the route
 @bp.route('/sessions/<int:session_id>/assignments')
 @login_required
 def assignments(session_id):
@@ -24,6 +25,7 @@ def assignments(session_id):
 
     return render_template('assignments.html', assignments_list=assignments_list, role=g.user[3])
 
+# create a new assignment associated with the session id parameter 
 @bp.route('/sessions/<int:session_id>/assignments/create', methods=['GET', 'POST'])
 @login_required
 def create_assignments(session_id):
@@ -39,14 +41,14 @@ def create_assignments(session_id):
             cur = con.cursor()
 
 
-            
+            # check the session_id in the route param vs the database
             cur.execute(""" 
                 SELECT id FROM sessions
                 WHERE id = %s
                 """,(session_id,))
             
             current_session_id = cur.fetchone()
-
+            # error handling if session_id in the route is not in db 
             if current_session_id == None:
                 flash("Session not found, go back to sessions.")
                 return render_template('create_assignments.html')

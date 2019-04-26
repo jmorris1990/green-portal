@@ -61,7 +61,8 @@ def create_user(email, password, role):
 
 
 
-
+# terminal command to create a user
+# syntax: "flask create-user 'user@email' 'password' 'teacher' OR 'student'"
 @click.command('create-user')
 @click.argument('email')
 @click.argument('password')

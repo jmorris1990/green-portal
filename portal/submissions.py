@@ -5,6 +5,7 @@ from .auth import login_required
 
 bp = Blueprint('submissions', __name__)
 
+# enter new grades into submissions associated to the submission_id route param
 @bp.route('/sessions/<int:session_id>/assignments/<int:assignment_id>/submissions/<int:submission_id>/update', methods=['GET', 'POST'])
 @login_required
 def enter_grade(session_id, assignment_id, submission_id):
@@ -60,6 +61,7 @@ def enter_grade(session_id, assignment_id, submission_id):
 
             return render_template('grade_submission.html', submission=submission)
 
+# view all submissions for assignment given by the assignment_id route param
 @bp.route('/sessions/<int:session_id>/assignments/<int:assignment_id>/submissions')
 @login_required
 def submissions(session_id, assignment_id):
