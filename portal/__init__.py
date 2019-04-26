@@ -31,6 +31,9 @@ def create_app(test_config=None):
     from . import assignments
     app.register_blueprint(assignments.bp)
 
+    from . import submissions
+    app.register_blueprint(submissions.bp)
+
     @app.route('/home')
     @login_required
     def home():

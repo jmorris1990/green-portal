@@ -1,0 +1,23 @@
+{% extends 'layouts/base.html' %}
+
+{% block styles %}<link rel="stylesheet" href="../../../../../../static/styles.css" type="text/css">{% endblock %}
+
+{% block title %}Grade Submission{% endblock %}
+
+{% block content %}
+<a href="../../submissions">Back</a> <!-- blank link right now -->
+<form method="POST">
+    User: {{ submission[3] }}
+
+    <label for="grade">
+        Grade:
+        <input type="number" name="grade" id="grade" {% if submission[1] != NULL %}value="{{ submission[1] }}"{% endif %}> / {{ submission[2] }}
+    </label>
+
+    <section class="percentage">
+        {{ (submission[1] / submission[2]) * 100 }}%
+    </section>
+
+    <input type="submit" name="submit" id="submit" value="Submit">
+</form>
+{% endblock %}
