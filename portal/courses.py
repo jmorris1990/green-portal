@@ -5,6 +5,7 @@ from .auth import login_required
 
 bp = Blueprint('courses', __name__)
 
+# display all courses created by the teacher who is logged in
 @bp.route('/courses')
 @login_required
 def courses():
@@ -27,7 +28,7 @@ def courses():
 
         return render_template('courses.html', role=g.user[3], courses=my_courses)
 
-
+# add a new course associated with the logged in teacher
 @bp.route('/courses/add', methods=['GET', 'POST'])
 @login_required
 def add_courses():
@@ -36,7 +37,6 @@ def add_courses():
     elif g.user[3] == 'teacher':
         if request.method == 'POST':
             name = request.form.get('name')
-            print(name)
             code = request.form.get('code')
             description = request.form.get('description')
 
@@ -55,7 +55,7 @@ def add_courses():
         else:
             return render_template('add_courses.html')
         
-
+# edit a course 
 @bp.route('/courses/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_courses(id):
