@@ -15,6 +15,7 @@ def test_flash_error(client, auth):
 
 
 def test_logout(client, auth):
+    user = auth.login_student()
     assert client.get('logout').status_code == 302
     response = auth.logout_student()
     assert response.status_code == 200

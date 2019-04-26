@@ -17,6 +17,9 @@ def test_add_session(client, auth):
     response = client.post('/sessions/add', data=dict(course_id="1", session_name="B", day="MWF", start_time="12:00", end_time="14:00", student1="1"))
     assert response.status_code == 302
 
+    response = client.post('/sessions/add', data=dict(course_id="0", session_name="B", day="MWF", start_time="12:00", end_time="14:00", student1="1"))
+    assert b'<form method="POST"' in response.data
+
     user = auth.login_student()
     response = client.get('/sessions/add')
     assert response.status_code == 401
