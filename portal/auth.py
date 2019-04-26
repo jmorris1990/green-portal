@@ -36,7 +36,7 @@ def load_logged_in_user():
 
 @bp.route('/', methods=('GET', 'POST'))
 def index():
-    print(g.user)
+
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
