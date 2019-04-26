@@ -6,7 +6,7 @@
 
 {% block content %}
 <a href="/sessions">Sessions</a>
-{% if role == 'teacher' %}
+{% if g.user[3] == 'teacher' %}
 <a href="./assignments/create">Create</a>
 
 {% endif %}
