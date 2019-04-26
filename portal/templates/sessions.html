@@ -7,7 +7,7 @@
     <a href="/home">Home</a>
 </section>
 <section>
-    {% if role == 'teacher' %}
+    {% if g.user[3] == 'teacher' %}
     <a href="/sessions/add">Add Session</a>
     {% endif %}
 </section>
