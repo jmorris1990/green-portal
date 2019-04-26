@@ -27,6 +27,6 @@ INSERT INTO assignments (session_id, name, description, total_points)
 VALUES (1, 'Assignment 1', 'This is assignment 1', 100),
        (1, 'Assignment 2', 'This is assignment 2', 120);
 
-INSERT INTO submissions (assignment_id, student_id, content, points_earned)
-VALUES (1, 2, 'I wrote this paper by myself. There is nothing here.', 0),
-       (2, 2, 'Yeah.', 0);
+INSERT INTO submissions (assignment_id, student_id, points_earned)
+VALUES (1, 2, 0),
+       (2, 2, 0);
