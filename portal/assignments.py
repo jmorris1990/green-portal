@@ -38,8 +38,6 @@ def create_assignments(session_id):
             con = db.get_db()
             cur = con.cursor()
 
-
-            
             cur.execute(""" 
                 SELECT id FROM sessions
                 WHERE id = %s
@@ -59,6 +57,40 @@ def create_assignments(session_id):
                 (session_id, name, description, total_points))
                  
                 con.commit()
+
+                cur.execute("""
+                    SELECT id FROM assignments
+                    WHERE session_id = %s
+                    AND name = %s
+                    AND description = %s
+                    AND total_points = %s;
+                """,
+                (session_id, name, description, total_points))
+
+                assignment_id = cur.fetchone()
+
+                cur.execute("""
+                    SELECT user_sessions.user_id, assignments.id FROM user_sessions
+                    JOIN users ON user_sessions.user_id = users.id
+                    JOIN sessions ON user_sessions.session_id = sessions.id
+                    JOIN assignments ON sessions.id = assignments.session_id
+                    WHERE users.role = 'student'
+                    AND user_sessions.session_id = %s
+                    AND assignments.id = %s;
+                """,
+                (session_id, assignment_id))
+
+                students_in_session = cur.fetchall()
+
+                for student in students_in_session:
+                    cur.execute("""
+                        INSERT INTO submissions (student_id, assignment_id, content, points_earned)
+                        VALUES (%s, %s, 'default', 0);
+                    """,
+                    # grabs the user id and the assignment id from the previous query
+                    (student[0], student[1]))
+
+                    con.commit()
 
                 cur.close()
                 con.close()
