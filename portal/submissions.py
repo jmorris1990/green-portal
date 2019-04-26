@@ -27,7 +27,7 @@ def enter_grade(session_id, assignment_id, submission_id):
             con.commit()
 
             cur.execute("""
-                SELECT submissions.content, submissions.points_earned, assignments.total_points, users.email FROM submissions
+                SELECT submissions.points_earned, assignments.total_points, users.email FROM submissions
                 JOIN assignments ON submissions.assignment_id = assignments.id
                 JOIN users ON submissions.student_id = users.id
                 WHERE submissions.id = %s;
@@ -46,7 +46,7 @@ def enter_grade(session_id, assignment_id, submission_id):
             cur = con.cursor()
 
             cur.execute("""
-                SELECT submissions.content, submissions.points_earned, assignments.total_points, users.email FROM submissions
+                SELECT submissions.points_earned, assignments.total_points, users.email FROM submissions
                 JOIN assignments ON submissions.assignment_id = assignments.id
                 JOIN users ON submissions.student_id = users.id
                 WHERE submissions.id = %s;
@@ -70,7 +70,7 @@ def submissions(session_id, assignment_id):
         cur=con.cursor()
 
         cur.execute("""
-        SELECT submissions.content, submissions.points_earned, users.email, submissions.id FROM submissions
+        SELECT submissions.points_earned, users.email, submissions.id FROM submissions
         JOIN users ON submissions.student_id = users.id
         WHERE submissions.assignment_id = %s;
         """, (assignment_id,))

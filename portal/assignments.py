@@ -84,8 +84,8 @@ def create_assignments(session_id):
 
                 for student in students_in_session:
                     cur.execute("""
-                        INSERT INTO submissions (student_id, assignment_id, content, points_earned)
-                        VALUES (%s, %s, 'default', 0);
+                        INSERT INTO submissions (student_id, assignment_id, points_earned)
+                        VALUES (%s, %s, 0);
                     """,
                     # grabs the user id and the assignment id from the previous query
                     (student[0], student[1]))

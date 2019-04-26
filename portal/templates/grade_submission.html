@@ -7,15 +7,15 @@
 {% block content %}
 <a href="../../submissions">Back</a> <!-- blank link right now -->
 <form method="POST">
-    User: {{ submission[3] }}
+    User: {{ submission[2] }}
 
     <label for="grade">
         Grade:
-        <input type="number" step="0.01" name="grade" id="grade" {% if submission[1] != NULL %}value="{{ submission[1] }}"{% endif %}> / {{ submission[2] }}
+        <input type="number" step="0.01" name="grade" id="grade" value="{{ submission[0] }}"> / {{ submission[1] }}
     </label>
 
     <section class="percentage">
-        {{ (submission[1] / submission[2]) * 100 }}%
+        {{ (submission[0] / submission[1]) * 100 }}%
     </section>
 
     <input type="submit" name="submit" id="submit" value="Submit">
