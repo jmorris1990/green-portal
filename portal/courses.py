@@ -5,6 +5,7 @@ from .auth import login_required
 
 bp = Blueprint('courses', __name__)
 
+# display all courses created by the teacher who is logged in
 @bp.route('/courses')
 @login_required
 def courses():
@@ -15,7 +16,7 @@ def courses():
         cur = con.cursor()
 
         cur.execute("""
-            SELECT id, name FROM courses 
+            SELECT id, name FROM courses
             WHERE teacher_id = %s;
         """,
         ([g.user[0]]))
@@ -27,16 +28,15 @@ def courses():
 
         return render_template('courses.html', role=g.user[3], courses=my_courses)
 
-
+# add a new course associated with the logged in teacher
 @bp.route('/courses/add', methods=['GET', 'POST'])
 @login_required
 def add_courses():
     if g.user[3] != 'teacher':
         return make_response("Unauthorized", 401)
-    elif g.user[3] == 'teacher':
+    else:
         if request.method == 'POST':
             name = request.form.get('name')
-            print(name)
             code = request.form.get('code')
             description = request.form.get('description')
 
@@ -54,8 +54,9 @@ def add_courses():
             return redirect(url_for('courses.courses'))
         else:
             return render_template('add_courses.html')
-        
 
+        
+# edit a course 
 @bp.route('/courses/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_courses(id):
@@ -72,7 +73,7 @@ def edit_courses(id):
 
     if g.user[3] != 'teacher' or id in teacher_courses:
         return make_response("Unauthorized", 401)
-    elif g.user[3] == 'teacher':
+    else:
         if request.method == 'POST':
             name = request.form['name']
             code = request.form['code']
@@ -96,7 +97,7 @@ def edit_courses(id):
             con.close()
 
             return redirect(url_for('courses.courses'))
-        
+
         else:
             con = db.get_db()
             cur = con.cursor()
