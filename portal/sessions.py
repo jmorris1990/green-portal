@@ -25,7 +25,7 @@ def sessions():
     cur.close()
     con.close()
 
-    return render_template('sessions.html', sessions_list=sessions_list, role=g.user[3])
+    return render_template('sessions.html', sessions_list=sessions_list)
 
 # add a session to any courses the teacher has created
 @bp.route('/sessions/add', methods=['GET', 'POST'])

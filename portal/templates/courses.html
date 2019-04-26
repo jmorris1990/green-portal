@@ -10,7 +10,7 @@
 <section>
     <ul class="courses">
         {% for course in courses %}
-        <li>{{ course[1] }}{% if role == 'teacher' %} <a href="courses/edit/{{ course[0] }}">Edit</a>{% endif %}</li>
+        <li>{{ course[1] }}{% if g.user[3] == 'teacher' %} <a href="courses/edit/{{ course[0] }}">Edit</a>{% endif %}</li>
         {% endfor %}
     </ul>
 </section>

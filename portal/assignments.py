@@ -23,7 +23,7 @@ def assignments(session_id):
     cur.close()
     con.close()
 
-    return render_template('assignments.html', assignments_list=assignments_list, role=g.user[3])
+    return render_template('assignments.html', assignments_list=assignments_list)
 
 # create a new assignment associated with the session id parameter 
 @bp.route('/sessions/<int:session_id>/assignments/create', methods=['GET', 'POST'])
