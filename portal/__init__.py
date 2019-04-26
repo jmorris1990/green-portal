@@ -37,7 +37,7 @@ def create_app(test_config=None):
     @app.route('/home')
     @login_required
     def home():
-        return render_template('home.html', role=g.user[3])
+        return render_template('home.html')
 
 
     return app

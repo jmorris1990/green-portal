@@ -26,7 +26,7 @@ def courses():
         cur.close()
         con.close()
 
-        return render_template('courses.html', role=g.user[3], courses=my_courses)
+        return render_template('courses.html', courses=my_courses)
 
 # add a new course associated with the logged in teacher
 @bp.route('/courses/add', methods=['GET', 'POST'])
