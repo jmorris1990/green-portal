@@ -16,7 +16,7 @@ def courses():
         cur = con.cursor()
 
         cur.execute("""
-            SELECT id, name FROM courses 
+            SELECT id, name FROM courses
             WHERE teacher_id = %s;
         """,
         ([g.user[0]]))
@@ -34,7 +34,7 @@ def courses():
 def add_courses():
     if g.user[3] != 'teacher':
         return make_response("Unauthorized", 401)
-    elif g.user[3] == 'teacher':
+    else:
         if request.method == 'POST':
             name = request.form.get('name')
             code = request.form.get('code')
@@ -54,6 +54,7 @@ def add_courses():
             return redirect(url_for('courses.courses'))
         else:
             return render_template('add_courses.html')
+
         
 # edit a course 
 @bp.route('/courses/edit/<int:id>', methods=['GET', 'POST'])
@@ -72,7 +73,7 @@ def edit_courses(id):
 
     if g.user[3] != 'teacher' or id in teacher_courses:
         return make_response("Unauthorized", 401)
-    elif g.user[3] == 'teacher':
+    else:
         if request.method == 'POST':
             name = request.form['name']
             code = request.form['code']
@@ -96,7 +97,7 @@ def edit_courses(id):
             con.close()
 
             return redirect(url_for('courses.courses'))
-        
+
         else:
             con = db.get_db()
             cur = con.cursor()

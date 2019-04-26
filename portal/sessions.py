@@ -29,12 +29,12 @@ def sessions():
 
 # add a session to any courses the teacher has created
 @bp.route('/sessions/add', methods=['GET', 'POST'])
-@login_required    
+@login_required
 def add_session():
-    
+
     if g.user[3] != 'teacher':
         return make_response("Unauthorized", 401)
-    elif g.user[3] == 'teacher':
+    else:
         if request.method == 'POST':
 
             course_id = request.form.get('course_id')
@@ -44,38 +44,32 @@ def add_session():
             end_time = request.form.get('end_time')
 
             con = db.get_db()
-            cur = con.cursor() 
-
-            cur.execute(""" 
+            cur = con.cursor()
+            cur.execute("""
                 SELECT id FROM courses
                 WHERE id = %s
                 """, (course_id,))
-            
+
             current_course_id = cur.fetchone()
 
             if current_course_id == None:
                 flash("You must create a course first.")
-            
+
                 con = db.get_db()
                 cur = con.cursor()
 
                 cur.execute("""
                     SELECT id, name FROM courses;
                 """)
-
                 courses = cur.fetchall()
-
                 cur.execute("""
                     SELECT id, email FROM users
                     WHERE role = 'student';
                 """)
-
                 students = cur.fetchall()
 
                 return render_template('add_session.html', courses=courses, students=students)
-
             else:
-
                 cur.execute("""
                     INSERT INTO sessions (course_id, session_name, day, start_time, end_time)
                     VALUES (%s, %s, %s, %s, %s);
@@ -93,7 +87,6 @@ def add_session():
                         end_time = %s;
                 """,
                 (course_id, session_name, day, start_time, end_time))
-
                 new_session = cur.fetchone()
 
                 cur.execute("""
@@ -101,11 +94,8 @@ def add_session():
                     VALUES (%s, %s);
                 """,
                 (g.user[0], new_session[0]))
-
                 con.commit()
-
                 copy = request.form.copy()
-
                 copy.pop('course_id')
                 copy.pop('session_name')
                 copy.pop('day')
@@ -113,16 +103,13 @@ def add_session():
                 copy.pop('end_time')
                 if copy.get('submit'):
                     copy.pop('submit')
-
                 for entry in copy:
                     cur.execute("""
                         INSERT INTO user_sessions (user_id, session_id)
                         VALUES (%s, %s);
                     """,
                     (copy.get(entry), new_session[0]))
-
                     con.commit()
-
                 cur.close()
                 con.close()
 
@@ -146,15 +133,3 @@ def add_session():
             students = cur.fetchall()
 
             return render_template('add_session.html', courses=courses, students=students)
-
-
-
-
-
-
-        
-
-
-    
-    
-
