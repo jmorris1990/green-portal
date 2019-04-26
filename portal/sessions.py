@@ -5,6 +5,7 @@ from .auth import login_required
 
 bp = Blueprint('sessions', __name__)
 
+# view all sessions associated with the teacher who created them
 @bp.route('/sessions', methods=['GET'])
 @login_required
 def sessions():
@@ -26,6 +27,7 @@ def sessions():
 
     return render_template('sessions.html', sessions_list=sessions_list, role=g.user[3])
 
+# add a session to any courses the teacher has created
 @bp.route('/sessions/add', methods=['GET', 'POST'])
 @login_required
 def add_session():
