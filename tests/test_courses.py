@@ -35,9 +35,9 @@ def test_edit_courses(client, auth):
     response = client.get('/courses/edit/1')
     assert b'<form method="POST"' in response.data
     assert b'<input type="text" name="name"' in response.data
-    
+
     response = client.post('/courses/edit/1', data=dict(name="Edited Course", code="EX 170", class_session="A", days="TR", start="9:00:00", end="9:50:00", description="baz", id=1))
     assert response.status_code == 302
-    
+
     response = client.get('/courses')
     assert b'<li>Edited Course' in response.data

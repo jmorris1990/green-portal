@@ -36,6 +36,7 @@ def load_logged_in_user():
 
 @bp.route('/', methods=('GET', 'POST'))
 def index():
+
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -48,7 +49,7 @@ def index():
         )
         # set the user to be only the ID
         user = cursor.fetchone()
-        
+
         if user is None:
             # throw an error
             error = 'Incorrect email'
