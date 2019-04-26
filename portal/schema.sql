@@ -15,7 +15,7 @@ CREATE TABLE users (
     role varchar(7) NOT NULL CHECK (role IN ('teacher', 'student'))
 );
 
-CREATE TABLE courses ( 
+CREATE TABLE courses (
     id bigserial PRIMARY KEY,
     name varchar(100) NOT NULL,
     course_code varchar(50) NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE sessions (
     day varchar(7) NOT NULL, -- M T W R F S U
     start_time varchar(20) NOT NULL,
     end_time varchar(20) NOT NULL
-    
+
 );
 
 CREATE TABLE user_sessions (
@@ -45,7 +45,7 @@ CREATE TABLE assignments (
     session_id bigint REFERENCES sessions (id),
     name varchar(100),
     description text,
-    total_points integer
+    total_points numeric
 );
 
 CREATE TABLE submissions (
@@ -53,5 +53,5 @@ CREATE TABLE submissions (
     assignment_id bigint REFERENCES assignments (id),
     student_id bigint REFERENCES users (id),
     content text,
-    points_earned integer
+    points_earned numeric 
 );
