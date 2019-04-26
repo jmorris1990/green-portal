@@ -19,7 +19,9 @@
             Total Points:
             {{ assignment[2] }}
         </section>
+        {% if role == 'teacher' %}
         <a href="./assignments/{{ assignment[3] }}/submissions">View Submissions</a>
+        {% endif %}
     </li>
     {% endfor %}
 </ul>
