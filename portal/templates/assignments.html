@@ -8,8 +8,8 @@
 <a href="/sessions">Sessions</a>
 {% if g.user[3] == 'teacher' %}
 <a href="./assignments/create">Create</a>
-
 {% endif %}
+
 <ul>
     {% for assignment in assignments_list %}
     <li>
@@ -19,7 +19,7 @@
             Total Points:
             {{ assignment[2] }}
         </section>
-        {% if role == 'teacher' %}
+        {% if g.user[3] == 'teacher' %}
         <a href="./assignments/{{ assignment[3] }}/submissions">View Submissions</a>
         {% endif %}
     </li>
