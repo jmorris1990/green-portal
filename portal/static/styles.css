@@ -12,17 +12,16 @@ html {
   font-size: 19px;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1 {
   font-family: 'Crimson Text', serif;
   font-weight: 400;
 }
-
 
 /**
  * Layout
  */
 body {
-  background-color: #8B1E41;
+  background-color: darkgrey;
   justify-content: space-between;
   display: flex;
   flex-direction: column;
@@ -30,24 +29,71 @@ body {
   padding: 1rem;
 }
 
+header {
+  background: #8B1E41;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  text-align: center;
+  top: 0;
+}
+
+ul.flashes {
+  animation-duration: 1s;
+  animation-name: slidedown;
+  color: red;
+  list-style: none;
+  left: 42%;
+  position: absolute;
+  top: 140px;
+  left: 198px;
+}
+
+@keyframes slidedown {
+  from {
+    margin-left: 100%;
+    width: 300%;
+  }
+
+  to {
+    margin-left: 0%;
+    width: 100%;
+  }
+}
+main.loginForm {
+
+}
+section.addCourses {
+  position: relative;
+  bottom: 20px;
+}
+
+section.homePage {
+  position: relative;
+  bottom: 100px;
+}
+main.mainLogin {
+  position: relative;
+  bottom: 85px;
+}
+
 @media (min-width: 760px) {
   footer {
     display: flex;
     justify-content: space-between;
   }
-  footer h2,
-  footer address {
+
+  footer p {
     width: 40%;
+    position: absolute;
+    bottom: 0;
   }
 }
-
 
 /**
  * Forms
  */
 form {
-  border: 1px solid black;
-  margin: 0 auto;
   padding: 1rem;
   width: 35vw;
 }
