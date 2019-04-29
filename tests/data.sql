@@ -23,10 +23,10 @@ VALUES (1, 1),
        (2, 1),
        (2, 3);
 
-INSERT INTO assignments (session_id, name, description, total_points)
-VALUES (1, 'Assignment 1', 'This is assignment 1', 100),
-       (1, 'Assignment 2', 'This is assignment 2', 120);
+INSERT INTO assignments (session_id, name, description, total_points, submission_type)
+VALUES (1, 'Assignment 1', 'This is assignment 1', 100, "manual"),
+       (1, 'Assignment 2', 'This is assignment 2', 120, "manual");
 
-INSERT INTO submissions (assignment_id, student_id, points_earned)
-VALUES (1, 2, 0),
-       (2, 2, 0);
+INSERT INTO submissions (assignment_id, student_id, points_earned, file)
+VALUES (1, 2, 0, NULL),
+       (2, 2, 0, NULL);
