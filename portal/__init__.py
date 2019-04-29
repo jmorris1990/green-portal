@@ -1,9 +1,10 @@
 from flask import Flask, render_template, g
 from .auth import login_required
 
-
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
+
+    UPLOAD_FOLDER = ''
 
     app.config.from_mapping(
         SECRET_KEY='dev',
@@ -33,6 +34,9 @@ def create_app(test_config=None):
 
     from . import submissions
     app.register_blueprint(submissions.bp)
+
+    from . import uploads
+    app.register_blueprint(uploads.bp)
 
     @app.route('/home')
     @login_required
