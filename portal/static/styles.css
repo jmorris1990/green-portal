@@ -60,9 +60,7 @@ ul.flashes {
     width: 100%;
   }
 }
-main.loginForm {
-
-}
+/* sections */
 section.addCourses {
   position: relative;
   bottom: 20px;
@@ -72,6 +70,8 @@ section.homePage {
   position: relative;
   bottom: 100px;
 }
+
+/* Main */
 main.mainLogin {
   position: relative;
   bottom: 85px;
