@@ -106,3 +106,19 @@ label {
 label input {
   width: 100%;
 }
+
+.navbar {
+  margin-left: -10px;
+  margin-right: -10px;
+  margin-top: -8px;
+  padding: inherit;
+  text-align: center;
+}
+
+.navlink {
+  display: inline-block;
+  font-size: 50px;
+  margin-bottom: 15px;
+  margin-left: 50px;
+  margin-right: 50px;
+}
