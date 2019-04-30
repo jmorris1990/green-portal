@@ -26,7 +26,6 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  padding: 1rem;
 }
 
 header {
@@ -73,6 +72,7 @@ section.homePage {
 
 /* Main */
 main.mainLogin {
+  padding-left: 25px;
   position: relative;
   bottom: 85px;
 }
@@ -83,11 +83,11 @@ main.mainLogin {
     justify-content: space-between;
   }
 
-  footer p {
-    width: 40%;
-    position: absolute;
-    bottom: 0;
-  }
+  footer {
+  background-color: #8B1E41;
+  padding: 15px;
+  bottom: 0;
+  width: 100%;
 }
 
 /**
