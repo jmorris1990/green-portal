@@ -13,7 +13,8 @@ def assignments(session_id):
     cur = con.cursor()
 
     cur.execute("""
-        SELECT name, description, total_points, id FROM assignments
+        SELECT assignments.name, assignments.description, assignments.total_points, assignments.id, assignments.submission_type, submissions.file FROM assignments
+        JOIN submissions ON assignments.id = submissions.assignment_id
         WHERE session_id = %s;
     """,
     (session_id,))
@@ -36,6 +37,7 @@ def create_assignments(session_id):
             name = request.form.get('name')
             description = request.form.get('description')
             total_points = request.form.get('total_points')
+            submission_type = request.form.get('submission_type')
 
             con = db.get_db()
             cur = con.cursor()
@@ -54,24 +56,25 @@ def create_assignments(session_id):
 
             else:
                 cur.execute("""
-                INSERT INTO assignments (session_id, name, description, total_points)
-                VALUES (%s, %s, %s, %s);
+                INSERT INTO assignments (session_id, name, description, total_points, submission_type)
+                VALUES (%s, %s, %s, %s, %s);
                 """,
-                (session_id, name, description, total_points))
+                (session_id, name, description, total_points, submission_type))
                  
                 con.commit()
 
                 cur.execute("""
-                    SELECT id FROM assignments
+                    SELECT id, submission_type FROM assignments
                     WHERE session_id = %s
                     AND name = %s
                     AND description = %s
-                    AND total_points = %s;
+                    AND total_points = %s
+                    AND submission_type = %s;
                 """,
-                (session_id, name, description, total_points))
+                (session_id, name, description, total_points, submission_type))
 
                 assignment_id = cur.fetchone()
-
+                
                 cur.execute("""
                     SELECT user_sessions.user_id, assignments.id FROM user_sessions
                     JOIN users ON user_sessions.user_id = users.id
@@ -81,19 +84,20 @@ def create_assignments(session_id):
                     AND user_sessions.session_id = %s
                     AND assignments.id = %s;
                 """,
-                (session_id, assignment_id))
+                (session_id, assignment_id[0]))
 
                 students_in_session = cur.fetchall()
 
                 for student in students_in_session:
                     cur.execute("""
-                        INSERT INTO submissions (student_id, assignment_id, points_earned)
-                        VALUES (%s, %s, 0);
+                        INSERT INTO submissions (student_id, assignment_id, points_earned, file)
+                        VALUES (%s, %s, 0, NULL);
                     """,
                     # grabs the user id and the assignment id from the previous query
                     (student[0], student[1]))
 
                     con.commit()
+
 
                 cur.close()
                 con.close()
