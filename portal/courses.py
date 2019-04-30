@@ -40,23 +40,29 @@ def add_courses():
             code = request.form.get('code')
             description = request.form.get('description')
 
-            con = db.get_db()
-            cur = con.cursor()
+            if name == '' or code == '' or description == '':
+                error = 'Please Fill Out All Fields'
+                flash(error)
+                return render_template('add_courses.html')
 
-            cur.execute("""
-                INSERT INTO courses (name, course_code, description, teacher_id)
-                VALUES (%s, %s, %s, %s);
-            """,
-            (name, code, description, g.user[0]))
+            else:
+                con = db.get_db()
+                cur = con.cursor()
 
-            con.commit()
+                cur.execute("""
+                    INSERT INTO courses (name, course_code, description, teacher_id)
+                    VALUES (%s, %s, %s, %s);
+                """,
+                (name, code, description, g.user[0]))
 
-            return redirect(url_for('courses.courses'))
+                con.commit()
+
+                return redirect(url_for('courses.courses'))
         else:
             return render_template('add_courses.html')
 
-        
-# edit a course 
+
+# edit a course
 @bp.route('/courses/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_courses(id):

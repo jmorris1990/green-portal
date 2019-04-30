@@ -11,6 +11,11 @@ def test_sessions(client, auth):
 
 def test_add_session(client, auth):
     user = auth.login_teacher()
+
+    # test for there to be data in fields
+    response = client.post('/sessions/add', data=dict(course_id="", session_name="", day="", start_time="", end_time="", student1=""))
+    assert b'<form method="POST"' in response.data
+
     response = client.get('/sessions/add')
     assert response.status_code == 200
 

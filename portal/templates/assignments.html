@@ -5,9 +5,11 @@
 {% block title %}Assignments{% endblock %}
 
 {% block content %}
+<a href="/home"> Home </a>
 <a href="/sessions">Sessions</a>
 {% if g.user[3] == 'teacher' %}
-<a href="./assignments/create">Create</a>
+<a href="./assignments/create">Create Assignment</a>
+
 {% endif %}
 
 <ul>
@@ -24,6 +26,9 @@
             {{ assignment[2] }}
         </section>
         {% if g.user[3] == 'teacher' %}
+        <a href="./assignments/{{ assignment[3] }}/submissions">View Submissions</a>
+        {% endif %}
+        {% if g.user[3] == 'student' %}
         <a href="./assignments/{{ assignment[3] }}/submissions">View Submissions</a>
         {% endif %}
         {% if g.user[3] == 'student' and assignment[4] == 'upload' and assignment[5] == None %}
