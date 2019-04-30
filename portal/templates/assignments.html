@@ -5,9 +5,10 @@
 {% block title %}Assignments{% endblock %}
 
 {% block content %}
+<a href="/home"> Home </a>
 <a href="/sessions">Sessions</a>
 {% if g.user[3] == 'teacher' %}
-<a href="./assignments/create">Create</a>
+<a href="./assignments/create">Create Assignment</a>
 
 {% endif %}
 <ul>

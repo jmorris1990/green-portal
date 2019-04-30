@@ -1,4 +1,4 @@
-from flask import render_template, flash, session, url_for, redirect, request, g, Blueprint, make_response
+from flask import render_template, flash, url_for, redirect, request, g, Blueprint, make_response
 
 from . import db
 from .auth import login_required
@@ -14,34 +14,41 @@ def enter_grade(session_id, assignment_id, submission_id):
     else:
         if request.method == 'POST':
             grade = request.form.get('grade')
+            error = None
+            print(grade)
 
-            con = db.get_db()
-            cur = con.cursor()
+            if grade == 0:
+                error = 'You Have Not Entered A Grade'
+                flash(error)
 
-            cur.execute("""
-                UPDATE submissions
-                SET points_earned = %s
-                WHERE id = %s;
-            """,
-            (grade, submission_id))
+            else:
+                con = db.get_db()
+                cur = con.cursor()
 
-            con.commit()
+                cur.execute("""
+                    UPDATE submissions
+                    SET points_earned = %s
+                    WHERE id = %s;
+                """,
+                (grade, submission_id))
 
-            cur.execute("""
-                SELECT submissions.points_earned, assignments.total_points, users.email FROM submissions
-                JOIN assignments ON submissions.assignment_id = assignments.id
-                JOIN users ON submissions.student_id = users.id
-                WHERE submissions.id = %s;
-            """,
-            (submission_id,))
+                con.commit()
 
-            submission = cur.fetchone()
+                cur.execute("""
+                    SELECT submissions.points_earned, assignments.total_points, users.email FROM submissions
+                    JOIN assignments ON submissions.assignment_id = assignments.id
+                    JOIN users ON submissions.student_id = users.id
+                    WHERE submissions.id = %s;
+                """,
+                (submission_id,))
 
-            cur.close()
-            con.close()
+                submission = cur.fetchone()
 
-            return redirect(url_for('submissions.submissions', session_id=session_id, assignment_id=assignment_id))
+                cur.close()
+                con.close()
 
+                return redirect(url_for('submissions.submissions', session_id=session_id, assignment_id=assignment_id))
+        # GET request
         else:
             con = db.get_db()
             cur = con.cursor()
