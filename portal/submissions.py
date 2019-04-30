@@ -17,9 +17,27 @@ def enter_grade(session_id, assignment_id, submission_id):
             error = None
             print(grade)
 
-            if grade == 0:
+            if grade == '':
                 error = 'You Have Not Entered A Grade'
                 flash(error)
+
+                con = db.get_db()
+                cur = con.cursor()
+
+                cur.execute("""
+                    SELECT submissions.points_earned, assignments.total_points, users.email FROM submissions
+                    JOIN assignments ON submissions.assignment_id = assignments.id
+                    JOIN users ON submissions.student_id = users.id
+                    WHERE submissions.id = %s;
+                """,
+                (submission_id,))
+
+                submission = cur.fetchone()
+
+                cur.close()
+                con.close()
+
+                return render_template('grade_submission.html', submission=submission)
 
             else:
                 con = db.get_db()
