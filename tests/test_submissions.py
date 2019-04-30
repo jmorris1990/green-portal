@@ -16,7 +16,7 @@ def test_enter_grade(client, auth):
 def test_submissions(client, auth):
     user = auth.login_student()
     response = client.get('/sessions/1/assignments/1/submissions')
-    assert response.status_code == 401
+    assert response.status_code == 200
 
     user = auth.login_teacher()
     response = client.get('/sessions/1/assignments/1/submissions')
