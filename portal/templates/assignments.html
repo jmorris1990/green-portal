@@ -28,6 +28,9 @@
         {% if g.user[3] == 'teacher' %}
         <a href="./assignments/{{ assignment[3] }}/submissions">View Submissions</a>
         {% endif %}
+        {% if g.user[3] == 'student' %}
+        <a href="./assignments/{{ assignment[3] }}/submissions">View Submissions</a>
+        {% endif %}
         {% if g.user[3] == 'student' and assignment[4] == 'upload' and assignment[5] == None %}
         <a href="#">Upload File</a>
         {% endif %}
