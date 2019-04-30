@@ -8,4 +8,4 @@ def test_config():
 
 def test_index(client):
     response = client.get('/')
-    assert b'<h1>TSCT Portal</h1>' in response.data
+    assert b'<h1 class="h1head">TSCT Portal</h1>' in response.data
