@@ -65,7 +65,7 @@ main.loginForm {
 }
 section.addCourses {
   position: relative;
-  bottom: 20px;
+  bottom: 75px;
 }
 
 section.homePage {
@@ -73,8 +73,9 @@ section.homePage {
   bottom: 100px;
 }
 main.mainLogin {
-  position: relative;
-  bottom: 85px;
+  position: absolute;
+  top: 180px;
+
 }
 
 @media (min-width: 760px) {
