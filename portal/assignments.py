@@ -25,7 +25,7 @@ def assignments(session_id):
 
     return render_template('assignments.html', assignments_list=assignments_list)
 
-# create a new assignment associated with the session id parameter 
+# create a new assignment associated with the session id parameter
 @bp.route('/sessions/<int:session_id>/assignments/create', methods=['GET', 'POST'])
 @login_required
 def create_assignments(session_id):
@@ -37,67 +37,74 @@ def create_assignments(session_id):
             description = request.form.get('description')
             total_points = request.form.get('total_points')
 
-            con = db.get_db()
-            cur = con.cursor()
+            if name == '' or description == '' or total_points == '':
+                error = 'Please Fill Out All Fields'
+                flash(error)
 
-            # check the session_id in the route param vs the database
-            cur.execute(""" 
-                SELECT id FROM sessions
-                WHERE id = %s
-                """,(session_id,))
-            
-            current_session_id = cur.fetchone()
-            # error handling if session_id in the route is not in db 
-            if current_session_id == None:
-                flash("Session not found, go back to sessions.")
                 return render_template('create_assignments.html')
 
             else:
+                con = db.get_db()
+                cur = con.cursor()
+
+                # check the session_id in the route param vs the database
                 cur.execute("""
-                INSERT INTO assignments (session_id, name, description, total_points)
-                VALUES (%s, %s, %s, %s);
-                """,
-                (session_id, name, description, total_points))
-                 
-                con.commit()
+                    SELECT id FROM sessions
+                    WHERE id = %s
+                    """,(session_id,))
 
-                cur.execute("""
-                    SELECT id FROM assignments
-                    WHERE session_id = %s
-                    AND name = %s
-                    AND description = %s
-                    AND total_points = %s;
-                """,
-                (session_id, name, description, total_points))
+                current_session_id = cur.fetchone()
+                # error handling if session_id in the route is not in db
+                if current_session_id == None:
+                    flash("Session not found, go back to sessions.")
+                    return render_template('create_assignments.html')
 
-                assignment_id = cur.fetchone()
-
-                cur.execute("""
-                    SELECT user_sessions.user_id, assignments.id FROM user_sessions
-                    JOIN users ON user_sessions.user_id = users.id
-                    JOIN sessions ON user_sessions.session_id = sessions.id
-                    JOIN assignments ON sessions.id = assignments.session_id
-                    WHERE users.role = 'student'
-                    AND user_sessions.session_id = %s
-                    AND assignments.id = %s;
-                """,
-                (session_id, assignment_id))
-
-                students_in_session = cur.fetchall()
-
-                for student in students_in_session:
+                else:
                     cur.execute("""
-                        INSERT INTO submissions (student_id, assignment_id, points_earned)
-                        VALUES (%s, %s, 0);
+                    INSERT INTO assignments (session_id, name, description, total_points)
+                    VALUES (%s, %s, %s, %s);
                     """,
-                    # grabs the user id and the assignment id from the previous query
-                    (student[0], student[1]))
+                    (session_id, name, description, total_points))
 
                     con.commit()
 
-                cur.close()
-                con.close()
+                    cur.execute("""
+                        SELECT id FROM assignments
+                        WHERE session_id = %s
+                        AND name = %s
+                        AND description = %s
+                        AND total_points = %s;
+                    """,
+                    (session_id, name, description, total_points))
 
-                return redirect(url_for('assignments.assignments', session_id=session_id))
+                    assignment_id = cur.fetchone()
+
+                    cur.execute("""
+                        SELECT user_sessions.user_id, assignments.id FROM user_sessions
+                        JOIN users ON user_sessions.user_id = users.id
+                        JOIN sessions ON user_sessions.session_id = sessions.id
+                        JOIN assignments ON sessions.id = assignments.session_id
+                        WHERE users.role = 'student'
+                        AND user_sessions.session_id = %s
+                        AND assignments.id = %s;
+                    """,
+                    (session_id, assignment_id))
+
+                    students_in_session = cur.fetchall()
+
+                    for student in students_in_session:
+                        cur.execute("""
+                            INSERT INTO submissions (student_id, assignment_id, points_earned)
+                            VALUES (%s, %s, 0);
+                        """,
+                        # grabs the user id and the assignment id from the previous query
+                        (student[0], student[1]))
+
+                        con.commit()
+
+                    cur.close()
+                    con.close()
+
+                    return redirect(url_for('assignments.assignments', session_id=session_id))
         else:
             return render_template('create_assignments.html')

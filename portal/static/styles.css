@@ -20,6 +20,16 @@ h1 {
 /**
  * Layout
  */
+
+ footer {
+   position: absolute;
+   left: 0;
+   bottom: 0;
+   background: #8B1E41;
+   width: 100%;
+   height: 60px;
+}
+
 body {
   background-color: darkgrey;
   justify-content: space-between;
@@ -46,7 +56,7 @@ ul.flashes {
   left: 42%;
   position: absolute;
   top: 140px;
-  left: 198px;
+  left: 163px;
 }
 
 @keyframes slidedown {
@@ -60,9 +70,7 @@ ul.flashes {
     width: 100%;
   }
 }
-main.loginForm {
 
-}
 section.addCourses {
   position: relative;
   bottom: 75px;
@@ -75,6 +83,7 @@ section.homePage {
 main.mainLogin {
   position: absolute;
   top: 180px;
+  padding-left: 10px;
 
 }
 
