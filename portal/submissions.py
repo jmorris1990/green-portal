@@ -15,7 +15,6 @@ def enter_grade(session_id, assignment_id, submission_id):
         if request.method == 'POST':
             grade = request.form.get('grade')
             error = None
-            print(grade)
 
             if grade == '':
                 error = 'You Have Not Entered A Grade'
