@@ -16,11 +16,18 @@
         <span>{{ assignment[0] }}</span>
         <p>{{ assignment[1] }}</p>
         <section>
+            Submission Type:
+            {{ assignment[4] }}
+        </section>
+        <section>
             Total Points:
             {{ assignment[2] }}
         </section>
         {% if g.user[3] == 'teacher' %}
         <a href="./assignments/{{ assignment[3] }}/submissions">View Submissions</a>
+        {% endif %}
+        {% if g.user[3] == 'student' and assignment[4] == 'upload' and assignment[5] == None %}
+        <a href="#">Upload File</a>
         {% endif %}
     </li>
     {% endfor %}

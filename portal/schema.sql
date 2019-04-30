@@ -45,12 +45,14 @@ CREATE TABLE assignments (
     session_id bigint REFERENCES sessions (id),
     name varchar(100),
     description text,
-    total_points numeric
+    total_points numeric,
+    submission_type varchar(6)
 );
 
 CREATE TABLE submissions (
     id bigserial PRIMARY KEY,
     assignment_id bigint REFERENCES assignments (id),
     student_id bigint REFERENCES users (id),
-    points_earned numeric 
+    points_earned numeric,
+    file text
 );
