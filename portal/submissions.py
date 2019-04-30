@@ -90,8 +90,19 @@ def enter_grade(session_id, assignment_id, submission_id):
 @bp.route('/sessions/<int:session_id>/assignments/<int:assignment_id>/submissions')
 @login_required
 def submissions(session_id, assignment_id):
-    if g.user[3] != 'teacher':
-        return make_response("Unauthorized", 401)
+    if g.user[3] == 'student':
+        con=db.get_db()
+        cur=con.cursor()
+
+        cur.execute("""
+        SELECT submissions.points_earned, users.email, submissions.id FROM submissions
+        JOIN users ON submissions.student_id = users.id
+        WHERE submissions.assignment_id = %s;
+        """, (assignment_id,))
+
+        submission_list = cur.fetchall()
+
+        return render_template('view_submissions.html', submission_list=submission_list, session_id=session_id)
     else:
         con=db.get_db()
         cur=con.cursor()
