@@ -47,23 +47,10 @@ def create_app(test_config=None):
                 if file and allowed_file(file.filename):
                     filename = secure_filename(file.filename)
                     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                    return redirect(url_for('uploaded_file',
-                                            filename=filename))
-        return '''
-            <!doctype html>
-            <title>Upload new File</title>
-            <h1>Upload new File</h1>
-            <form method=post enctype=multipart/form-data>
-            <input type=file name=file>
-            <input type=submit value=Upload>
-            </form>
-            '''
+                    return redirect(url_for('upload'))
+        return render_template('upload.html')
 
-    @app.route('/uploads/<filename>')
-    def uploaded_file(filename):
-        return send_from_directory(app.config['UPLOAD_FOLDER'],
-                                filename)
-
+    
     from . import db
     db.init_app(app)
 
