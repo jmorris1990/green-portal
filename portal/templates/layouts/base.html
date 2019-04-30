@@ -35,15 +35,15 @@
 
     {% block navbar %}
     <ul class="navbar">
-      <li class="navlink"><a href="./home">Home</a></li>
+      <li class="navlink"><a class="anchor" href="/home">Home</a></li>
       {% if g.user[3] == 'teacher' %}
-      <li class="navlink"><a href="./">Courses</a></li>
+      <li class="navlink"><a class="anchor" href="/courses">Courses</a></li>
       {% endif %}
-      <li class="navlink"><a href="./">Sessions</a></li>
-      <li class="navlink"><a href="./">Logout</a></li>
+      <li class="navlink"><a class="anchor" href="/sessions">Sessions</a></li>
+      <li class="navlink"><a class="anchor" href="/logout">Logout</a></li>
     </ul>
     {% endblock %}
-    
+
     {% block content %}{% endblock %}
   </main>
 

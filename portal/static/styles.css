@@ -21,7 +21,7 @@ h1 {
  * Layout
  */
 body {
-  background-color: darkgrey;
+  background: linear-gradient(to bottom, grey, lightgrey);
   justify-content: space-between;
   display: flex;
   flex-direction: column;
@@ -107,18 +107,31 @@ label input {
   width: 100%;
 }
 
+.navlink:hover {
+  background-color: #9B1E48;
+}
+
 .navbar {
-  margin-left: -10px;
+  margin-left: 70px;
   margin-right: -10px;
   margin-top: -8px;
-  padding: inherit;
+  padding: -1px;
   text-align: center;
+  position: fixed;
+  top: 40px;
+  left: -7%;
 }
 
 .navlink {
+  border-radius: 7px;
   display: inline-block;
-  font-size: 50px;
+  font-size: 20px;
   margin-bottom: 15px;
   margin-left: 50px;
   margin-right: 50px;
+}
+
+.anchor {
+  color: black;
+  text-decoration: none;
 }
