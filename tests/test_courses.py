@@ -25,6 +25,10 @@ def test_add_courses(client, auth):
     response = client.post('/courses/add', data=dict(name="New Course", code="EX 108", class_session="B", days="MWF", start="9:30:00", end="10:50:00", description="foo"))
     assert response.status_code == 302
 
+    # test for fields to be empty
+    response = client.post('/courses/add', data=dict(name="", code="", class_session="", days="", start="", end="", description=""))
+    assert b'<form method="POST"' in response.data
+
 
 def test_edit_courses(client, auth):
     user = auth.login_student()

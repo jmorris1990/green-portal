@@ -10,9 +10,12 @@ def test_assignments(client, auth):
 def test_create_assignments(client, auth):
     user = auth.login_teacher()
 
-    response = client.get('sessions/1/assignments/create')
+    # Test for input fields to be empty
+    response = client.post('sessions/0/assignments/create', data=dict(name='', description='', total_points=''))
     assert b'<form method="POST"' in response.data
 
+    response = client.get('sessions/1/assignments/create')
+    assert b'<form method="POST"' in response.data
 
     response = client.post('sessions/0/assignments/create', data=dict(name='New Assignment', description='This is a new assignment.', total_points='100'))
     assert b'<form method="POST"' in response.data
