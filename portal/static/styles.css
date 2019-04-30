@@ -31,12 +31,11 @@ h1 {
 }
 
 body {
-  background-color: darkgrey;
+  background: linear-gradient(to bottom, grey, lightgrey);
   justify-content: space-between;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  padding: 1rem;
 }
 
 header {
@@ -51,7 +50,7 @@ header {
 ul.flashes {
   animation-duration: 1s;
   animation-name: slidedown;
-  color: red;
+  color: black;
   list-style: none;
   left: 42%;
   position: absolute;
@@ -70,7 +69,7 @@ ul.flashes {
     width: 100%;
   }
 }
-
+/* sections */
 section.addCourses {
   position: relative;
   bottom: 75px;
@@ -80,6 +79,8 @@ section.homePage {
   position: relative;
   bottom: 100px;
 }
+
+/* Main */
 main.mainLogin {
   position: absolute;
   top: 180px;
@@ -93,11 +94,11 @@ main.mainLogin {
     justify-content: space-between;
   }
 
-  footer p {
-    width: 40%;
-    position: absolute;
-    bottom: 0;
-  }
+  footer {
+  background-color: #8B1E41;
+  padding: 15px;
+  bottom: 0;
+  width: 100%;
 }
 
 /**
@@ -115,4 +116,36 @@ label {
 
 label input {
   width: 100%;
+}
+
+.navlink:hover {
+  background-color: #9B1E48;
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.navbar {
+  margin-left: 70px;
+  margin-right: -10px;
+  margin-top: -8px;
+  padding: -1px;
+  text-align: center;
+  position: fixed;
+  top: 40px;
+  left: -7%;
+}
+
+.navlink {
+  border: 2px solid black;
+  border-radius: 5px;
+  display: inline-block;
+  font-size: 20px;
+  margin-bottom: 15px;
+  margin-left: 50px;
+  margin-right: 50px;
+  padding: 5px;
+}
+
+.anchor {
+  color: black;
+  text-decoration: none;
 }

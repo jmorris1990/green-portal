@@ -13,7 +13,8 @@ def assignments(session_id):
     cur = con.cursor()
 
     cur.execute("""
-        SELECT name, description, total_points, id FROM assignments
+        SELECT assignments.name, assignments.description, assignments.total_points, assignments.id, assignments.submission_type, submissions.file FROM assignments
+        JOIN submissions ON assignments.id = submissions.assignment_id
         WHERE session_id = %s;
     """,
     (session_id,))
@@ -36,6 +37,7 @@ def create_assignments(session_id):
             name = request.form.get('name')
             description = request.form.get('description')
             total_points = request.form.get('total_points')
+            submission_type = request.form.get('submission_type')
 
             if name == '' or description == '' or total_points == '':
                 error = 'Please Fill Out All Fields'

@@ -17,10 +17,10 @@ def test_create_assignments(client, auth):
     response = client.get('sessions/1/assignments/create')
     assert b'<form method="POST"' in response.data
 
-    response = client.post('sessions/0/assignments/create', data=dict(name='New Assignment', description='This is a new assignment.', total_points='100'))
+    response = client.post('sessions/0/assignments/create', data=dict(name='New Assignment', description='This is a new assignment.', total_points='100', submission_type="manual"))
     assert b'<form method="POST"' in response.data
 
-    response = client.post('sessions/1/assignments/create', data=dict(name='New Assignment', description='This is a new assignment.', total_points='100'))
+    response = client.post('sessions/1/assignments/create', data=dict(name='New Assignment', description='This is a new assignment.', total_points='100', submission_type="manual"))
     assert response.status_code == 302
 
     response = client.get('sessions/1/assignments')
