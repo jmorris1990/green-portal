@@ -14,11 +14,11 @@ def create_app(test_config=None):
         SECRET_KEY='dev',
         DB_NAME='portal',
         DB_USER='portal_user',
-        UPLOAD_FOLDER=app.root_path
+        UPLOAD_FOLDER=app.instance_path
     )
 
     try:
-        os.makedirs(app.root_path)
+        os.makedirs(app.instance_path)
     except OSError:
         pass
 
