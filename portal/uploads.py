@@ -11,7 +11,7 @@ bp = Blueprint('uploads', __name__)
 
 # prevent relative path traversal exploit eg ../../../malicious.txt
 def allowed_file(filename):
-    ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+    ALLOWED_EXTENSIONS = set(['.doc', '.docx', '.pdf', '.txt'])
 
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -33,6 +33,10 @@ def upload(assignment_id):
                 if file.filename == '':
                     flash('No selected file')
                     return redirect(request.url)
+                if file and not allowed_file(file.filename):
+                    flash("That file type is not supported, only upload .doc .docx .pdf. or .txt ")
+                    return redirect(request.url)
+
                 if file and allowed_file(file.filename):
 
                     con = db.get_db()
