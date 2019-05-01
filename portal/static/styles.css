@@ -138,3 +138,44 @@ label input {
   color: black;
   text-decoration: none;
 }
+
+.session {
+  padding: 3px;
+  margin-bottom: 2px;
+}
+
+.addsession {
+  background-color: grey;
+  color: black;
+  text-decoration: none;
+  border: 2px solid black;
+  padding: 4px;
+}
+
+.addbutton:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+
+}
+
+.addbutton {
+  margin-left: 10px;
+  padding: 2px;
+  border: 2px solid black;
+  color: black;
+  text-decoration: none;
+}
+
+.button:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.addsession:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.button {
+  border: 1px solid black;
+  color: black;
+  text-decoration: none;
+  margin-left: 25px;
+}

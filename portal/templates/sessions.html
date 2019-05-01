@@ -4,16 +4,13 @@
 
 {% block content %}
 <section>
-    <a href="/home">Home</a>
-</section>
-<section>
     {% if g.user[3] == 'teacher' %}
-    <a href="/sessions/add">Add Session</a>
+    <a class="addsession" href="/sessions/add">Add Session</a>
     {% endif %}
 </section>
 <ul>
     {% for session in sessions_list %}
-    <li>{{ session[0] }} {{ session[1] }} {{ session[2] }} {{ session[3] }} {{ session[4] }}-{{ session[5] }} <a href="sessions/{{ session[6] }}/assignments">Assignments</a></li>
+    <li class="session">{{ session[0] }} {{ session[1] }} {{ session[2] }} {{ session[3] }} {{ session[4] }}-{{ session[5] }} <a class="button" href="sessions/{{ session[6] }}/assignments">View Assignments</a></li>
     {% endfor %}
 </ul>
 {% endblock %}
