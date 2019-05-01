@@ -11,7 +11,7 @@ bp = Blueprint('uploads', __name__)
 
 # prevent relative path traversal exploit eg ../../../malicious.txt
 def allowed_file(filename):
-    ALLOWED_EXTENSIONS = set(['.doc', '.docx', '.pdf', '.txt'])
+    ALLOWED_EXTENSIONS = set(['doc', 'docx', 'pdf', 'txt'])
 
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -32,9 +32,6 @@ def upload(assignment_id):
                 # submit an empty part without filename
                 if file.filename == '':
                     flash('No selected file')
-                    return redirect(request.url)
-                if file and not allowed_file(file.filename):
-                    flash("That file type is not supported, only upload .doc .docx .pdf. or .txt ")
                     return redirect(request.url)
 
                 if file and allowed_file(file.filename):
@@ -66,4 +63,10 @@ def upload(assignment_id):
                     file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
                    
                     return redirect(request.url)
+
+                if file is not allowed_file(file.filename):
+
+                    flash("That file type is not supported, only upload .doc .docx .pdf. or .txt ")
+                    return redirect(request.url)
+
         return render_template('upload.html')
