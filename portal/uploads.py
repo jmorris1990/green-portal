@@ -61,6 +61,17 @@ def upload(assignment_id):
                     filename = generate_password_hash(filename) # hashes filename to prevent direct object reference
 
                     file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+
+                    cur.execute(""" 
+                        UPDATE submissions 
+                        SET file = %s
+                        WHERE id = %s
+                        """,(filename, assignment_data[0]))
+                    
+                    con.commit()
+
+                    cur.close()
+                    con.close()
                    
                     return redirect(request.url)
 
