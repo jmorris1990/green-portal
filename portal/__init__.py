@@ -14,8 +14,13 @@ def create_app(test_config=None):
         SECRET_KEY='dev',
         DB_NAME='portal',
         DB_USER='portal_user',
-        UPLOAD_FOLDER = os.path.join(app.instance_path, './uploaded_submissions'),
+        UPLOAD_FOLDER=app.root_path
     )
+
+    try:
+        os.makedirs(app.root_path)
+    except OSError:
+        pass
 
 
     # TODO: Create untracked config.py with random secret key for production
@@ -24,6 +29,8 @@ def create_app(test_config=None):
     else:
         app.config.from_mapping(test_config)
     
+
+   
     
     from . import db
     db.init_app(app)

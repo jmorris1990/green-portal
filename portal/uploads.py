@@ -1,5 +1,5 @@
 import os
-from flask import render_template, flash, session, url_for, redirect, request, g, Blueprint
+from flask import render_template, flash, session, url_for, redirect, request, g, Blueprint, current_app
 from werkzeug.utils import secure_filename
 
 from . import db
@@ -33,7 +33,7 @@ def upload():
                     return redirect(request.url)
                 if file and allowed_file(file.filename):
                     filename = secure_filename(file.filename)
-                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
                     message = '{} uploaded'.format(filename)
                     flash(message)
                     return redirect(url_for('uploads.upload'))
