@@ -1,10 +1,12 @@
 {% extends 'layouts/base.html' %}
 
-{% block title %}Upload New File{% endblock %}
+{% block styles %}<link rel="stylesheet" href="../../static/styles.css" type="text/css"/>{% endblock %}
+
+{% block title %}Upload Submission{% endblock %}
 
 {% block content %}
 <form method=post enctype=multipart/form-data>
-<input type=file name=file>
-<input type=submit value=Upload>
+    <input type=file name=file>
+    <input type=submit value=Upload>
 </form>
 {% endblock %}
