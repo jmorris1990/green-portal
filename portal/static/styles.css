@@ -144,9 +144,18 @@ label input {
   text-decoration: none;
 }
 
+.sessionsection {
+  position: static;
+  margin-top: 200px;
+}
+
+.sessionul {
+  padding-top: 50px;
+}
+
 .session {
   list-style: none;
-  padding: 3px;
+  padding: 6px;
   margin-bottom: 2px;
 }
 
@@ -155,25 +164,43 @@ label input {
   color: black;
   text-decoration: none;
   border: 2px solid black;
-  padding: 4px;
+  padding: 5px;
 }
 
 .addbutton {
+  border-radius: 5px;
   background-color: #9B1E48;
   margin-left: 10px;
-  padding: 2px;
+  padding: 3px;
   border: 2px solid black;
   color: black;
   text-decoration: none;
 }
 
+.viewsub {
+  border-radius: 5px;
+  background-color: #9B1E48;
+  border: 1px solid black;
+  color: black;
+  padding: 3px;
+}
+
+.assignsection {
+  margin-bottom: 15px;
+}
+
 .button {
+  border-radius: 5px;
   background-color: #9B1E48;
   border: 1px solid black;
   color: black;
   text-decoration: none;
   margin-left: 25px;
-  padding: 1px;
+  padding: 3px;
+}
+
+.viewsub:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 }
 
 .addbutton:hover {

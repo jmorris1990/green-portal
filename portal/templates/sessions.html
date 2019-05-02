@@ -3,12 +3,12 @@
 {% block title %}Sessions{% endblock %}
 
 {% block content %}
-<section>
+<section class="sessionsection" >
     {% if g.user[3] == 'teacher' %}
     <a class="addsession" href="/sessions/add">Add Session</a>
     {% endif %}
 </section>
-<ul>
+<ul class="sessionul" >
     {% for session in sessions_list %}
     <li class="session">{{ session[0] }} {{ session[1] }} {{ session[2] }} {{ session[3] }} {{ session[4] }}-{{ session[5] }} <a class="button" href="sessions/{{ session[6] }}/assignments">View Assignments</a></li>
     {% endfor %}
