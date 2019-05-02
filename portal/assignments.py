@@ -63,10 +63,10 @@ def create_assignments(session_id):
 
                 else:
                     cur.execute("""
-                    INSERT INTO assignments (session_id, name, description, total_points)
-                    VALUES (%s, %s, %s, %s);
+                    INSERT INTO assignments (session_id, name, description, total_points, submission_type)
+                    VALUES (%s, %s, %s, %s, %s);
                     """,
-                    (session_id, name, description, total_points))
+                    (session_id, name, description, total_points, submission_type))
 
                     con.commit()
 
@@ -75,9 +75,10 @@ def create_assignments(session_id):
                         WHERE session_id = %s
                         AND name = %s
                         AND description = %s
-                        AND total_points = %s;
+                        AND total_points = %s,
+                        AND submission_type = %s;
                     """,
-                    (session_id, name, description, total_points))
+                    (session_id, name, description, total_points, submission_type))
 
                     assignment_id = cur.fetchone()
 
