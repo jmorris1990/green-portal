@@ -1,5 +1,5 @@
 import os
-from flask import render_template, flash, session, url_for, redirect, request, g, Blueprint, current_app
+from flask import render_template, flash, session, url_for, redirect, request, g, Blueprint, current_app, make_response
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash
 
