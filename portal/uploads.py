@@ -47,33 +47,40 @@ def upload(assignment_id):
                     
                     assignment_data = cur.fetchone() # assignment_data[0] is the submission id, assignment_data[1] is the submission type
 
-                    filename = secure_filename(file.filename)
+                    if assignment_data[1] == 'upload':
 
-                    message = '{} uploaded'.format(filename)
-                    flash(message) # flash the message before appending and hashing so it just returns the filename they uploaded
+                        filename = secure_filename(file.filename)
 
-                    # append the submission id to the filename before the file extension, then hash the filename, then insert that filename into the file field in the submissions table
+                        message = '{} uploaded'.format(filename)
+                        flash(message) # flash the message before appending and hashing so it just returns the filename they uploaded
 
-                    fname, extension = os.path.splitext(filename) # splits filename into its name and extension so the submission id can be inserted before extension on the next line
+                        # append the submission id to the filename before the file extension, then hash the filename, then insert that filename into the file field in the submissions table
 
-                    filename = "{fname}{a_id}{extension}".format(fname=fname, a_id=assignment_data[0], extension=extension)
+                        fname, extension = os.path.splitext(filename) # splits filename into its name and extension so the submission id can be inserted before extension on the next line
 
-                    filename = generate_password_hash(filename) # hashes filename to prevent direct object reference
+                        appended_filename = "{fname}{a_id}{extension}".format(fname=fname, a_id=assignment_data[0], extension=extension)
 
-                    file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+                        hashed_filename = generate_password_hash(appended_filename) # hashes filename to prevent direct object reference
 
-                    cur.execute(""" 
-                        UPDATE submissions 
-                        SET file = %s
-                        WHERE id = %s
-                        """,(filename, assignment_data[0]))
+                        file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], hashed_filename))
+
+                        cur.execute(""" 
+                            UPDATE submissions 
+                            SET file = %s
+                            WHERE id = %s
+                            """,(filename, assignment_data[0]))
+                        
+                        con.commit()
+
+                        cur.close()
+                        con.close()
                     
-                    con.commit()
+                        return redirect(request.url)
+                    
+                    else:
 
-                    cur.close()
-                    con.close()
-                   
-                    return redirect(request.url)
+                        flash("You cannot upload a file to this submission.")
+                        return redirect(request.url)
 
                 if file is not allowed_file(file.filename):
 
