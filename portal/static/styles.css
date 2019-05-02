@@ -189,6 +189,11 @@ label input {
   margin-bottom: 15px;
 }
 
+.sessionhtml {
+  position: static;
+  margin-top: 75px;
+}
+
 .button {
   border-radius: 5px;
   background-color: #9B1E48;
