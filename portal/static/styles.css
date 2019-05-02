@@ -149,6 +149,10 @@ label input {
   margin-top: 200px;
 }
 
+.assignmentspacing {
+  padding: 15px;
+}
+
 .sessionul {
   padding-top: 50px;
 }
@@ -157,6 +161,14 @@ label input {
   list-style: none;
   padding: 6px;
   margin-bottom: 2px;
+}
+
+.sessioncourse {
+  font-size: 30px;
+}
+
+.gradeupdate {
+  padding: 25px;
 }
 
 .addsession {

@@ -4,11 +4,11 @@
 
 {% block content %}
 
-<a href="/sessions/{{ session_id }}/assignments"> Assignments </a>
+<a class="addsession" href="/sessions/{{ session_id }}/assignments"> Assignments </a>
 
 <ul>
   {% for submission in submission_list %}
-<li>{{ submission[0] }} {{ submission[1] }} <a href="./submissions/{{ submission[2] }}/update">Grade This</a></li>
+<li>{{ submission[0] }}  {{ submission[1] }} <a class="addbutton" href="./submissions/{{ submission[2] }}/update">Grade This</a></li>
   {% endfor %}
 </ul>
 

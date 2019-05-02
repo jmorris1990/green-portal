@@ -9,7 +9,7 @@
 <section>
     <ul class="courses">
         {% for course in courses %}
-        <li>{{ course[1] }}{% if g.user[3] == 'teacher' %} <a class="addbutton" href="courses/edit/{{ course[0] }}">Edit Course</a>{% endif %}</li>
+        <li class="assignmentspacing">{{ course[1] }}{% if g.user[3] == 'teacher' %} <a class="addbutton" href="courses/edit/{{ course[0] }}">Edit Course</a>{% endif %}</li>
         {% endfor %}
     </ul>
 </section>

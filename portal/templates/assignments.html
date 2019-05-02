@@ -5,14 +5,13 @@
 {% block title %}Assignments{% endblock %}
 
 {% block content %}
-<a href="/sessions">Sessions</a>
 {% if g.user[3] == 'teacher' %}
-<a href="./assignments/create">Create</a>
+<a class="addsession" href="./assignments/create">Create</a>
 
 {% endif %}
 <ul>
     {% for assignment in assignments_list %}
-    <li>
+    <li class="assignmentspacing">
         <span>{{ assignment[0] }}</span>
         <p>{{ assignment[1] }}</p>
         <section class="assignsection">
