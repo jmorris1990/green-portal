@@ -6,8 +6,11 @@ def test_enter_grade(client, auth):
     assert b'<input type="number"' in response.data
 
     response = client.post('/sessions/1/assignments/1/submissions/1/update', data=dict(grade="100"))
-
     assert response.status_code == 302
+
+    # test for there to be no grade entered
+    response = client.post('/sessions/1/assignments/1/submissions/1/update', data=dict(grade=""))
+    assert b'ul' in response.data
 
     user = auth.login_student()
     response = client.get('/sessions/1/assignments/1/submissions/1/update')
@@ -16,7 +19,7 @@ def test_enter_grade(client, auth):
 def test_submissions(client, auth):
     user = auth.login_student()
     response = client.get('/sessions/1/assignments/1/submissions')
-    assert response.status_code == 401
+    assert response.status_code == 200
 
     user = auth.login_teacher()
     response = client.get('/sessions/1/assignments/1/submissions')

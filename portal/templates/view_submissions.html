@@ -3,13 +3,23 @@
 {% block title %} Submissions {% endblock %}
 
 {% block content %}
-
+<a href="/home"> Home </a>
 <a href="/sessions/{{ session_id }}/assignments"> Assignments </a>
 
+{% if g.user[3] == 'teacher' %}
 <ul>
   {% for submission in submission_list %}
 <li>{{ submission[0] }} {{ submission[1] }} <a href="./submissions/{{ submission[2] }}/update">Grade This</a></li>
   {% endfor %}
 </ul>
+{% endif %}
+
+{% if g.user[3] == 'student' %}
+<ul>
+  {% for submission in submission_list %}
+<li>{{ submission[0] }} {{ submission[1] }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
 
 {% endblock %}
