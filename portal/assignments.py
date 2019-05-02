@@ -36,65 +36,83 @@ def create_assignments(session_id):
             total_points = request.form.get('total_points')
             submission_type = request.form.get('submission_type')
 
-            with db.get_db() as con:
-                with con.cursor() as cur:
-                    # check the session_id in the route param vs the database
-                    cur.execute("""
-                        SELECT id FROM sessions
-                        WHERE id = %s
-                        """,(session_id,))
-
-                    current_session_id = cur.fetchone()
-
-            # error handling if session_id in the route is not in db
-            if current_session_id == None:
-                flash("Session not found, go back to sessions.")
+            if name == '' or description == '' or total_points == '' or submission_type == '':
+                flash('Please Fill Out All Fields')
                 return render_template('create_assignments.html')
-
             else:
 
                 with db.get_db() as con:
                     with con.cursor() as cur:
+                        # check the session_id in the route param vs the database
                         cur.execute("""
-                        INSERT INTO assignments (session_id, name, description, total_points, submission_type)
-                        VALUES (%s, %s, %s, %s, %s);
-                        """,
-                        (session_id, name, description, total_points, submission_type))
+                            SELECT id FROM sessions
+                            WHERE id = %s
+                            """,(session_id,))
 
-                        cur.execute("""
-                            SELECT id, submission_type FROM assignments
-                            WHERE session_id = %s
-                            AND name = %s
-                            AND description = %s
-                            AND total_points = %s
-                            AND submission_type = %s;
-                        """,
-                        (session_id, name, description, total_points, submission_type))
+                        current_session_id = cur.fetchone()
+                # error handling if session_id in the route is not in db
+                if current_session_id == None:
+                    flash("Session not found, go back to sessions.")
+                    return render_template('create_assignments.html')
 
-                        assignment_id = cur.fetchone()
-
-                        cur.execute("""
-                            SELECT user_sessions.user_id, assignments.id FROM user_sessions
-                            JOIN users ON user_sessions.user_id = users.id
-                            JOIN sessions ON user_sessions.session_id = sessions.id
-                            JOIN assignments ON sessions.id = assignments.session_id
-                            WHERE users.role = 'student'
-                            AND user_sessions.session_id = %s
-                            AND assignments.id = %s;
-                        """,
-                        (session_id, assignment_id[0]))
-
-                        students_in_session = cur.fetchall()
-
-                        for student in students_in_session:
+                else:
+                    with db.get_db() as con:
+                        with con.cursor() as cur:
+                            # check the session_id in the route param vs the database
                             cur.execute("""
-                                INSERT INTO submissions (student_id, assignment_id, points_earned, file)
-                                VALUES (%s, %s, 0, NULL);
-                            """,
-                            # grabs the user id and the assignment id from the previous query
-                            (student[0], student[1]))
+                                SELECT id FROM sessions
+                                WHERE id = %s
+                                """,(session_id,))
+
+                            current_session_id = cur.fetchone()
+                    # error handling if session_id in the route is not in db
+                    if current_session_id == None:
+                        flash("Session not found, go back to sessions.")
+                        return render_template('create_assignments.html')
+
+                    else:
+                        with db.get_db() as con:
+                            with con.cursor() as cur:
+                                cur.execute("""
+                                INSERT INTO assignments (session_id, name, description, total_points, submission_type)
+                                VALUES (%s, %s, %s, %s, %s);
+                                """,
+                                (session_id, name, description, total_points, submission_type))
+
+                                cur.execute("""
+                                SELECT id FROM assignments
+                                WHERE session_id = %s
+                                AND name = %s
+                                AND description = %s
+                                AND total_points = %s
+                                AND submission_type = %s;
+                                """,
+                                (session_id, name, description, total_points, submission_type))
+
+                                assignment_id = cur.fetchone()
+
+                                cur.execute("""
+                                    SELECT user_sessions.user_id, assignments.id FROM user_sessions
+                                    JOIN users ON user_sessions.user_id = users.id
+                                    JOIN sessions ON user_sessions.session_id = sessions.id
+                                    JOIN assignments ON sessions.id = assignments.session_id
+                                    WHERE users.role = 'student'
+                                    AND user_sessions.session_id = %s
+                                    AND assignments.id = %s;
+                                """,
+                                (session_id, assignment_id[0]))
+
+                                students_in_session = cur.fetchall()
+
+                                for student in students_in_session:
+                                    cur.execute("""
+                                        INSERT INTO submissions (student_id, assignment_id, points_earned, file)
+                                        VALUES (%s, %s, 0, NULL);
+                                    """,
+                                    # grabs the user id and the assignment id from the previous query
+                                    (student[0], student[1]))
 
 
-                        return redirect(url_for('assignments.assignments', session_id=session_id))
+                                return redirect(url_for('assignments.assignments', session_id=session_id))
         else:
             return render_template('create_assignments.html')
