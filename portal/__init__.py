@@ -1,6 +1,11 @@
-from flask import Flask, render_template, g
+from flask import Flask, render_template, g, request, redirect, make_response, flash, url_for, send_from_directory
 from .auth import login_required
 
+from werkzeug.utils import secure_filename
+
+from . import db
+from .auth import login_required
+import os
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
@@ -9,13 +14,24 @@ def create_app(test_config=None):
         SECRET_KEY='dev',
         DB_NAME='portal',
         DB_USER='portal_user',
+        UPLOAD_FOLDER=os.path.join(app.instance_path, 'upload_submissions')
     )
+
+    try:
+        os.makedirs(os.path.join(app.instance_path, 'upload_submissions'))
+    except OSError:
+        pass
+
+
     # TODO: Create untracked config.py with random secret key for production
     if test_config is None:
         app.config.from_pyfile('config.py', silent=True)
     else:
         app.config.from_mapping(test_config)
+    
 
+   
+    
     from . import db
     db.init_app(app)
 
@@ -33,6 +49,9 @@ def create_app(test_config=None):
 
     from . import submissions
     app.register_blueprint(submissions.bp)
+
+    from . import uploads
+    app.register_blueprint(uploads.bp)
 
     @app.route('/home')
     @login_required
