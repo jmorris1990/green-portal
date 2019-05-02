@@ -13,9 +13,8 @@ def assignments(session_id):
     cur = con.cursor()
 
     cur.execute("""
-        SELECT assignments.name, assignments.description, assignments.total_points, assignments.id, assignments.submission_type, submissions.file FROM assignments
-        JOIN submissions ON assignments.id = submissions.assignment_id
-        WHERE session_id = %s;
+        SELECT assignments.name, assignments.description, assignments.total_points, assignments.id, assignments.submission_type FROM assignments
+        WHERE assignments.session_id = %s;
     """,
     (session_id,))
 
