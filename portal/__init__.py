@@ -14,11 +14,11 @@ def create_app(test_config=None):
         SECRET_KEY='dev',
         DB_NAME='portal',
         DB_USER='portal_user',
-        UPLOAD_FOLDER=app.instance_path
+        UPLOAD_FOLDER=os.path.join(app.instance_path, 'upload_submissions')
     )
 
     try:
-        os.makedirs(app.instance_path)
+        os.makedirs(os.path.join(app.instance_path, 'upload_submissions'))
     except OSError:
         pass
 
