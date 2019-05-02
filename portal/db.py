@@ -48,7 +48,6 @@ def init_db_command():
 
 def create_user(email, password, role):
 
-
     conn = get_db()
 
     cur = conn.cursor()
