@@ -118,7 +118,7 @@ label input {
   margin-top: -8px;
   padding: -1px;
   text-align: center;
-  position: fixed;
+  display: inline;
   top: 40px;
   left: -7%;
 }

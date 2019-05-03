@@ -8,8 +8,8 @@ def test_courses(client, auth):
     user = auth.login_teacher()
     response = client.get('/courses')
     assert b'<ul class="courses">' in response.data
-    assert b'<li>Course 1 <a href' in response.data
-    assert b'<a href="/courses/add"' in response.data
+    assert b'<li class="assignmentspacing">Course 1 <a class="addbutton" href' in response.data
+    assert b'<a class="addsession" href="/courses/add"' in response.data
 
 def test_add_courses(client, auth):
     user = auth.login_student()
@@ -40,4 +40,4 @@ def test_edit_courses(client, auth):
     assert response.status_code == 302
 
     response = client.get('/courses')
-    assert b'<li>Edited Course' in response.data
+    assert b'<li class="assignmentspacing">Edited Course' in response.data

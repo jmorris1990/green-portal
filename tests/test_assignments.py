@@ -3,7 +3,7 @@ def test_assignments(client, auth):
     response = client.get('sessions/1/assignments')
 
     assert b'<ul' in response.data
-    assert b'<li>' in response.data
+    assert b'<li class="assignmentspacing">' in response.data
     assert b'<span>Assignment 1</span>' in response.data
     assert b'<p>This is assignment 1</p>' in response.data
 
@@ -22,7 +22,7 @@ def test_create_assignments(client, auth):
 
     response = client.get('sessions/1/assignments')
     assert b'<ul' in response.data
-    assert b'<li>' in response.data
+    assert b'<li class="assignmentspacing">' in response.data
     assert b'<span>New Assignment</span>' in response.data
     assert b'<p>This is a new assignment.</p>' in response.data
 
