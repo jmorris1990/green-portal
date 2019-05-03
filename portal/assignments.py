@@ -9,19 +9,16 @@ bp = Blueprint('assignments', __name__)
 @bp.route('/sessions/<int:session_id>/assignments')
 @login_required
 def assignments(session_id):
-
-    with db.get_db() as  con:
-        with con.cursor() as cur:
-            cur.execute("""
-                SELECT assignments.name, assignments.description, assignments.total_points, assignments.id, assignments.submission_type, submissions.file FROM assignments
-                JOIN submissions ON assignments.id = submissions.assignment_id
-                WHERE session_id = %s;
-            """,
-            (session_id,))
-
-            assignments_list = cur.fetchall()
-
-            return render_template('assignments.html', assignments_list=assignments_list)
+  with db.get_db() as  con:
+      with con.cursor() as cur:
+        cur.execute("""
+            SELECT assignments.name, assignments.description, assignments.total_points, assignments.id, assignments.submission_type FROM assignments
+            WHERE assignments.session_id = %s;
+        """,
+        (session_id,))
+        
+        assignments_list = cur.fetchall()
+        return render_template('assignments.html', assignments_list=assignments_list)
 
 # create a new assignment associated with the session id parameter
 @bp.route('/sessions/<int:session_id>/assignments/create', methods=['GET', 'POST'])
