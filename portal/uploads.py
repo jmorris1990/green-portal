@@ -16,7 +16,7 @@ def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@bp.route('/upload/<int:assignment_id>', methods=['GET', 'POST']) 
+@bp.route('/upload/<int:assignment_id>', methods=['GET', 'POST'])
 @login_required
 def upload(assignment_id):
     if g.user[3] != 'student':
@@ -35,17 +35,16 @@ def upload(assignment_id):
                     return redirect(request.url)
 
                 if file and allowed_file(file.filename):
+                    with db.get_db() as con:
+                        with con.cursor() as cur:
+                            # assignment_data[0] is the submission id, assignment_data[1] is the submission type
+                            cur.execute("""
+                                SELECT submissions.id, assignments.submission_type FROM assignments
+                                JOIN submissions ON assignments.id = submissions.assignment_id
+                                WHERE submissions.student_id = %s
+                                AND submissions.assignment_id = %s;""",(g.user[0], assignment_id))
 
-                    con = db.get_db()
-                    cur = con.cursor()
-
-                    cur.execute(""" 
-                        SELECT submissions.id, assignments.submission_type FROM assignments 
-                        JOIN submissions ON assignments.id = submissions.assignment_id
-                        WHERE submissions.student_id = %s
-                        AND submissions.assignment_id = %s;""",(g.user[0], assignment_id))
-                    
-                    assignment_data = cur.fetchone() # assignment_data[0] is the submission id, assignment_data[1] is the submission type
+                            assignment_data = cur.fetchone()
 
                     if assignment_data[1] == 'upload':
 
@@ -64,21 +63,17 @@ def upload(assignment_id):
 
                         file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], hashed_filename))
 
-                        cur.execute(""" 
-                            UPDATE submissions 
-                            SET file = %s
-                            WHERE id = %s
-                            """,(filename, assignment_data[0]))
-                        
-                        con.commit()
+                        with db.get_db() as con:
+                            with con.cursor() as cur:
+                                cur.execute("""
+                                    UPDATE submissions
+                                    SET file = %s
+                                    WHERE id = %s
+                                    """,(filename, assignment_data[0]))
 
-                        cur.close()
-                        con.close()
-                    
                         return redirect(request.url)
-                    
-                    else:
 
+                    else:
                         flash("You cannot upload a file to this submission.")
                         return redirect(request.url)
 

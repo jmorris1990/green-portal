@@ -12,21 +12,18 @@ def courses():
     if g.user[3] != 'teacher':
         return make_response("Unauthorized", 401)
     else:
-        con = db.get_db()
-        cur = con.cursor()
+        with db.get_db() as con:
+            with con.cursor() as cur:
+                # get the name of courses to display them in the template
+                cur.execute("""
+                    SELECT id, name FROM courses
+                    WHERE teacher_id = %s;
+                """,
+                ([g.user[0]]))
 
-        cur.execute("""
-            SELECT id, name FROM courses
-            WHERE teacher_id = %s;
-        """,
-        ([g.user[0]]))
+                my_courses = cur.fetchall()
 
-        my_courses = cur.fetchall()
-
-        cur.close()
-        con.close()
-
-        return render_template('courses.html', courses=my_courses)
+                return render_template('courses.html', courses=my_courses)
 
 # add a new course associated with the logged in teacher
 @bp.route('/courses/add', methods=['GET', 'POST'])
@@ -46,36 +43,32 @@ def add_courses():
                 return render_template('add_courses.html')
 
             else:
-                con = db.get_db()
-                cur = con.cursor()
+                with db.get_db() as con:
+                    with con.cursor() as cur:
+                        cur.execute("""
+                            INSERT INTO courses (name, course_code, description, teacher_id)
+                            VALUES (%s, %s, %s, %s);
+                        """,
+                        (name, code, description, g.user[0]))
 
-                cur.execute("""
-                    INSERT INTO courses (name, course_code, description, teacher_id)
-                    VALUES (%s, %s, %s, %s);
-                """,
-                (name, code, description, g.user[0]))
-
-                con.commit()
-
-                return redirect(url_for('courses.courses'))
+                        return redirect(url_for('courses.courses'))
         else:
             return render_template('add_courses.html')
-
 
 # edit a course
 @bp.route('/courses/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_courses(id):
-    con = db.get_db()
-    cur = con.cursor()
 
-    cur.execute("""
-        SELECT id FROM courses
-        WHERE teacher_id = %s;
-    """,
-    (g.user[0],))
+    with db.get_db() as con:
+        with con.cursor() as cur:
+            cur.execute("""
+                SELECT id FROM courses
+                WHERE teacher_id = %s;
+            """,
+            (g.user[0],))
 
-    teacher_courses = cur.fetchall()
+            teacher_courses = cur.fetchall()
 
     if g.user[3] != 'teacher' or id in teacher_courses:
         return make_response("Unauthorized", 401)
@@ -85,40 +78,31 @@ def edit_courses(id):
             code = request.form['code']
             description = request.form['description']
 
-            con = db.get_db()
-            cur = con.cursor()
+            with db.get_db() as con:
+                with con.cursor() as cur:
 
-            cur.execute("""
-                UPDATE courses
-                SET name = %s,
-                    course_code = %s,
-                    description = %s
-                WHERE id = %s;
-            """,
-            (name, code, description, id))
-
-            con.commit()
-
-            cur.close()
-            con.close()
+                    cur.execute("""
+                        UPDATE courses
+                        SET name = %s,
+                            course_code = %s,
+                            description = %s
+                        WHERE id = %s;
+                    """,
+                    (name, code, description, id))
 
             return redirect(url_for('courses.courses'))
 
         else:
-            con = db.get_db()
-            cur = con.cursor()
-
-            cur.execute("""
-                SELECT name, course_code, description, id FROM courses
-                WHERE id = %s;
-            """,
-            (id,))
-
-            form_info = cur.fetchone()
-
-            cur.close()
-            con.close()
+            with db.get_db() as con:
+                with con.cursor() as cur:
 
 
+                    cur.execute("""
+                        SELECT name, course_code, description, id FROM courses
+                        WHERE id = %s;
+                    """,
+                    (id,))
+
+                    form_info = cur.fetchone()
 
             return render_template('edit_courses.html', info=form_info)

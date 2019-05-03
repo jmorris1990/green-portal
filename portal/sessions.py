@@ -9,23 +9,21 @@ bp = Blueprint('sessions', __name__)
 @bp.route('/sessions', methods=['GET'])
 @login_required
 def sessions():
-    con = db.get_db()
-    cur = con.cursor()
 
-    cur.execute("""
-        SELECT courses.name, courses.course_code, sessions.session_name, sessions.day, sessions.start_time, sessions.end_time, sessions.id FROM user_sessions
-        JOIN sessions ON user_sessions.session_id = sessions.id
-        JOIN courses ON courses.id = sessions.course_id
-        WHERE user_sessions.user_id = %s;
-    """,
-    (g.user[0],))
+    with db.get_db() as con:
+        with con.cursor() as cur:
 
-    sessions_list = cur.fetchall()
+            cur.execute("""
+                SELECT courses.name, courses.course_code, sessions.session_name, sessions.day, sessions.start_time, sessions.end_time, sessions.id FROM user_sessions
+                JOIN sessions ON user_sessions.session_id = sessions.id
+                JOIN courses ON courses.id = sessions.course_id
+                WHERE user_sessions.user_id = %s;
+            """,
+            (g.user[0],))
 
-    cur.close()
-    con.close()
+            sessions_list = cur.fetchall()
 
-    return render_template('sessions.html', sessions_list=sessions_list)
+            return render_template('sessions.html', sessions_list=sessions_list)
 
 # add a session to any courses the teacher has created
 @bp.route('/sessions/add', methods=['GET', 'POST'])
@@ -47,45 +45,99 @@ def add_session():
                 error = 'Please Fill Out All Fields'
                 flash(error)
 
-                #fill out the fields with info in the db after the error flashes 
-                con = db.get_db()
-                cur = con.cursor()
+                #fill out the fields with info in the db after the error flashes
+                with db.get_db() as con:
+                    with con.cursor() as cur:
+                        cur.execute("""
+                            SELECT id, name FROM courses;
+                        """)
+                        courses = cur.fetchall()
 
-                cur.execute("""
-                    SELECT id, name FROM courses;
-                """)
+                        cur.execute("""
+                            SELECT id, email FROM users
+                            WHERE role = 'student';
+                        """)
+                        students = cur.fetchall()
 
-                courses = cur.fetchall()
-
-                cur.execute("""
-                    SELECT id, email FROM users
-                    WHERE role = 'student';
-                """)
-
-                students = cur.fetchall()
-
-                return render_template('add_session.html', courses=courses, students=students)
+                        return render_template('add_session.html', courses=courses, students=students)
             else:
+                with db.get_db() as con:
+                    with con.cursor() as cur:
+                        cur.execute("""
+                            SELECT id FROM courses
+                            WHERE id = %s
+                            """, (course_id,))
 
-                con = db.get_db()
-                cur = con.cursor()
-                cur.execute("""
-                    SELECT id FROM courses
-                    WHERE id = %s
-                    """, (course_id,))
-
-                current_course_id = cur.fetchone()
+                        current_course_id = cur.fetchone()
 
                 if current_course_id == None:
                     flash("You must create a course first.")
 
-                    con = db.get_db()
-                    cur = con.cursor()
+                    with db.get_db() as con:
+                        with con.cursor() as cur:
+                            cur.execute("""
+                                SELECT id, name FROM courses;
+                            """)
+                            courses = cur.fetchall()
+                            cur.execute("""
+                                SELECT id, email FROM users
+                                WHERE role = 'student';
+                            """)
+                            students = cur.fetchall()
 
+                            return render_template('add_session.html', courses=courses, students=students)
+                else:
+
+                    with db.get_db() as con:
+                        with con.cursor() as cur:
+                            cur.execute("""
+                                INSERT INTO sessions (course_id, session_name, day, start_time, end_time)
+                                VALUES (%s, %s, %s, %s, %s);
+                            """,
+                            (course_id, session_name, day, start_time, end_time))
+
+                            cur.execute("""
+                                SELECT id FROM sessions
+                                WHERE course_id = %s AND
+                                    session_name = %s AND
+                                    day = %s AND
+                                    start_time = %s AND
+                                    end_time = %s;
+                            """,
+                            (course_id, session_name, day, start_time, end_time))
+                            new_session = cur.fetchone()
+
+                            cur.execute("""
+                                INSERT INTO user_sessions (user_id, session_id)
+                                VALUES (%s, %s);
+                            """,
+                            (g.user[0], new_session[0]))
+                            con.commit()
+                            copy = request.form.copy()
+                            copy.pop('course_id')
+                            copy.pop('session_name')
+                            copy.pop('day')
+                            copy.pop('start_time')
+                            copy.pop('end_time')
+                            if copy.get('submit'):
+                                copy.pop('submit')
+                            for entry in copy:
+                                cur.execute("""
+                                    INSERT INTO user_sessions (user_id, session_id)
+                                    VALUES (%s, %s);
+                                """,
+                                (copy.get(entry), new_session[0]))
+
+                            return redirect(url_for('sessions.sessions', id=course_id))
+
+        else:
+            with db.get_db() as con:
+                with con.cursor() as cur:
                     cur.execute("""
                         SELECT id, name FROM courses;
                     """)
                     courses = cur.fetchall()
+
                     cur.execute("""
                         SELECT id, email FROM users
                         WHERE role = 'student';
@@ -93,67 +145,3 @@ def add_session():
                     students = cur.fetchall()
 
                     return render_template('add_session.html', courses=courses, students=students)
-                else:
-                    cur.execute("""
-                        INSERT INTO sessions (course_id, session_name, day, start_time, end_time)
-                        VALUES (%s, %s, %s, %s, %s);
-                    """,
-                    (course_id, session_name, day, start_time, end_time))
-
-                    con.commit()
-
-                    cur.execute("""
-                        SELECT id FROM sessions
-                        WHERE course_id = %s AND
-                            session_name = %s AND
-                            day = %s AND
-                            start_time = %s AND
-                            end_time = %s;
-                    """,
-                    (course_id, session_name, day, start_time, end_time))
-                    new_session = cur.fetchone()
-
-                    cur.execute("""
-                        INSERT INTO user_sessions (user_id, session_id)
-                        VALUES (%s, %s);
-                    """,
-                    (g.user[0], new_session[0]))
-                    con.commit()
-                    copy = request.form.copy()
-                    copy.pop('course_id')
-                    copy.pop('session_name')
-                    copy.pop('day')
-                    copy.pop('start_time')
-                    copy.pop('end_time')
-                    if copy.get('submit'):
-                        copy.pop('submit')
-                    for entry in copy:
-                        cur.execute("""
-                            INSERT INTO user_sessions (user_id, session_id)
-                            VALUES (%s, %s);
-                        """,
-                        (copy.get(entry), new_session[0]))
-                        con.commit()
-                    cur.close()
-                    con.close()
-
-                    return redirect(url_for('sessions.sessions', id=course_id))
-
-        else:
-            con = db.get_db()
-            cur = con.cursor()
-
-            cur.execute("""
-                SELECT id, name FROM courses;
-            """)
-
-            courses = cur.fetchall()
-
-            cur.execute("""
-                SELECT id, email FROM users
-                WHERE role = 'student';
-            """)
-
-            students = cur.fetchall()
-
-            return render_template('add_session.html', courses=courses, students=students)

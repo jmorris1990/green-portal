@@ -23,31 +23,29 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        conn = db.get_db()
-        cursor = conn.cursor()
-        cursor.execute(
-            'SELECT * FROM users WHERE id = %s', (user_id,)
-        )
-        g.user = cursor.fetchone()
-        cursor.close()
-     
+        with db.get_db() as con:
+            with con.cursor() as cur:
+                cur.execute(
+                    'SELECT * FROM users WHERE id = %s', (user_id,)
+                )
+                g.user = cur.fetchone()
 
 # login page
 @bp.route('/', methods=('GET', 'POST'))
 def index():
 
     if request.method == 'POST':
+
         email = request.form['email']
         password = request.form['password']
         #have an error
         error = None
-        conn = db.get_db()
-        cursor = conn.cursor()
-        cursor.execute(
-            'SELECT * FROM users WHERE email = %s;', (email,)
-        )
-        # set the user to be only the ID
-        user = cursor.fetchone()
+        with db.get_db() as con:
+            with con.cursor() as cur:
+                cur.execute(
+                    'SELECT * FROM users WHERE email = %s;', (email,)
+                )
+                user = cur.fetchone()
 
         if user is None:
             # throw an error
@@ -60,8 +58,6 @@ def index():
             # clear existing session and set to logged in user id
             session.clear()
             session['user_id'] = user[0]
-            cursor.close()
-            conn.close()
 
             return redirect(url_for('home'))
 
