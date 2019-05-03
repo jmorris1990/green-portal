@@ -60,12 +60,15 @@
  label input {
    width: 100%;
  }
+
+li {
+  list-style-type: none;
+}
  
 .navbar {
   display: flex;
   justify-content: space-around;
   flex-flow: row wrap;
-  list-style-type: none;
   padding-left: 0;
 }
 
