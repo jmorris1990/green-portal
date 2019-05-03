@@ -17,8 +17,8 @@ CREATE TABLE users (
 
 CREATE TABLE courses (
     id bigserial PRIMARY KEY,
-    name varchar(100) NOT NULL,
-    course_code varchar(50) NOT NULL,
+    name text NOT NULL,
+    course_code text NOT NULL,
     description text NOT NULL,
     teacher_id bigint REFERENCES users (id) NOT NULL
 );
@@ -27,10 +27,10 @@ CREATE TABLE courses (
 CREATE TABLE sessions (
     id bigserial PRIMARY KEY,
     course_id bigserial REFERENCES courses (id),
-    session_name varchar(2),
-    day varchar(7) NOT NULL, -- M T W R F S U
-    start_time varchar(20) NOT NULL,
-    end_time varchar(20) NOT NULL
+    session_name text,
+    day text NOT NULL, -- M T W R F S U
+    start_time text NOT NULL,
+    end_time text NOT NULL
 
 );
 
@@ -43,7 +43,7 @@ CREATE TABLE user_sessions (
 CREATE TABLE assignments (
     id bigserial PRIMARY KEY,
     session_id bigint REFERENCES sessions (id),
-    name varchar(100),
+    name text,
     description text,
     total_points numeric,
     submission_type varchar(6)
