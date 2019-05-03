@@ -60,4 +60,27 @@
  label input {
    width: 100%;
  }
+
+li {
+  list-style-type: none;
+}
  
+.navbar {
+  display: flex;
+  justify-content: space-around;
+  flex-flow: row wrap;
+  padding-left: 0;
+}
+
+.navbar a {
+  color: black;
+  display: inline-block;
+  padding: 1em 1em;
+  border: 1px solid black;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.navbar a:hover {
+  background-color: slategrey;
+}
