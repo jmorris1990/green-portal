@@ -17,17 +17,19 @@
    font-weight: 400;
  }
  
- 
+ h1 {
+   padding-left: 1rem;
+ }
+
  /**
   * Layout
   */
  body {
-   background-color: #8B1E41;
+   background: linear-gradient(to bottom, grey, lightgrey);
    justify-content: space-between;
    display: flex;
    flex-direction: column;
    min-height: 100vh;
-   padding: 1rem;
  }
  
  @media (min-width: 760px) {
@@ -41,7 +43,12 @@
    }
  }
  
- 
+
+
+ a {
+   color: #8B1E41;
+   text-decoration: none;
+ }
  /**
   * Forms
   */
@@ -83,4 +90,20 @@ li {
 
 .navbar a:hover {
   background-color: slategrey;
+}
+
+.flashes {
+  text-align: center;
+}
+
+header {
+  background-color: #8B1E41;
+}
+
+footer {
+  background-color: #8B1E41;
+}
+
+footer p {
+  padding-left: 1rem; 
 }
