@@ -13,43 +13,40 @@
   {% block styles %}<link rel="stylesheet" href="static/styles.css" type="text/css" />{% endblock %}
   {% endblock %}
 </head>
-<main>
-  {% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-  <ul class=flashes>
-    {% for category, message in messages %}
-    <li class="{{ category }}">{{ message }}</li>
-    {% endfor %}
-  </ul>
-  {% endif %}
-  {% endwith %}
-</main>
 
 <body>
+
   <header>
+      {% block navbar %}
+      <ul class="navbar">
+        <li class="navlink"><a class="anchor" href="/home">Home</a></li>
+        {% if g.user[3] == 'teacher' %}
+        <li class="navlink"><a class="anchor" href="/courses">Courses</a></li>
+        {% endif %}
+        <li class="navlink"><a class="anchor" href="/sessions">Sessions</a></li>
+        <li class="navlink"><a class="anchor" href="/logout">Logout</a></li>
+      </ul>
+      {% endblock %}
     <h1 class="h1head">{{ self.title() }}</h1>
   </header>
 
-
-  <main class="mainLogin">
-
-    {% block navbar %}
-    <ul class="navbar">
-      <li class="navlink"><a class="anchor" href="/home">Home</a></li>
-      {% if g.user[3] == 'teacher' %}
-      <li class="navlink"><a class="anchor" href="/courses">Courses</a></li>
+  <main>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <ul class=flashes>
+        {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
       {% endif %}
-      <li class="navlink"><a class="anchor" href="/sessions">Sessions</a></li>
-      <li class="navlink"><a class="anchor" href="/logout">Logout</a></li>
-    </ul>
-    {% endblock %}
-
+    {% endwith %}
     {% block content %}{% endblock %}
   </main>
 
   <footer>
     <p><strong>Thaddeus Stevens College of Technology</strong></p>
   </footer>
+
 </body>
 
 </html>
