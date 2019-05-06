@@ -6,21 +6,21 @@
  *:after {
    box-sizing: border-box;
  }
- 
+
  html {
    font-family: 'Lato', Helvetica, Arial, sans-serif;
    font-size: 19px;
  }
- 
+
  h1, h2, h3, h4, h5, h6 {
    font-family: 'Crimson Text', serif;
    font-weight: 400;
+   text-align: center;
  }
- 
- h1 {
-   padding-left: 1rem;
- }
-
+main {
+  margin-left: 100px;
+  margin: 0 auto;
+}
  /**
   * Layout
   */
@@ -31,7 +31,7 @@
    flex-direction: column;
    min-height: 100vh;
  }
- 
+
  @media (min-width: 760px) {
    footer {
      display: flex;
@@ -42,8 +42,22 @@
      width: 40%;
    }
  }
- 
 
+section.addCourses {
+  position: relative;
+  bottom: 100px;
+}
+
+section.courseList {
+  position: relative;
+  bottom: 100px;
+}
+
+section.sessionList {
+  position: relative;
+  bottom: 100px;
+
+}
 
  a {
    color: #8B1E41;
@@ -54,25 +68,25 @@
   * Forms
   */
  form {
-   border: 1px solid black;
+   border: none;
    margin: 0 auto;
    padding: 1rem;
    width: 35vw;
  }
- 
+
  label {
    display: block;
    padding-bottom: 1rem;
  }
- 
+
  label input {
    width: 100%;
  }
 
-li {
+li{
   list-style-type: none;
 }
- 
+
 .navbar {
   display: flex;
   justify-content: space-around;
@@ -106,5 +120,5 @@ footer {
 }
 
 footer p {
-  padding-left: 1rem; 
+  padding-left: 1rem;
 }
