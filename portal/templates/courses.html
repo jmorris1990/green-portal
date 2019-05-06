@@ -3,9 +3,8 @@
 {% block title %}My Courses{% endblock %}
 
 {% block content %}
-
 <section class="courseList">
-  <a href="/courses/add">Add Courses</a>
+<a href="/courses/add">Add Courses</a>
   <ul class="courses">
     {% for course in courses %}
     <li>{{ course[1] }}{% if g.user[3] == 'teacher' %} <a href="courses/edit/{{ course[0] }}">Edit</a>{% endif %}</li>

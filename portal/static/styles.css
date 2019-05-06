@@ -1,47 +1,50 @@
 /**
  * Global Defaults and Typography
  */
- *,
- *:before,
- *:after {
-   box-sizing: border-box;
- }
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
 
- html {
-   font-family: 'Lato', Helvetica, Arial, sans-serif;
-   font-size: 19px;
- }
+html {
+  font-family: 'Lato', Helvetica, Arial, sans-serif;
+  font-size: 19px;
+}
 
- h1, h2, h3, h4, h5, h6 {
-   font-family: 'Crimson Text', serif;
-   font-weight: 400;
-   text-align: center;
- }
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Crimson Text', serif;
+  font-weight: 400;
+  text-align: center;
+}
+
 main {
   margin-left: 100px;
   margin: 0 auto;
 }
- /**
+
+/**
   * Layout
   */
- body {
-   background: linear-gradient(to bottom, grey, lightgrey);
-   justify-content: space-between;
-   display: flex;
-   flex-direction: column;
-   min-height: 100vh;
- }
+body {
+  background: linear-gradient(to bottom, grey, lightgrey);
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 
- @media (min-width: 760px) {
-   footer {
-     display: flex;
-     justify-content: space-between;
-   }
-   footer h2,
-   footer address {
-     width: 40%;
-   }
- }
+@media (min-width: 760px) {
+  footer {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  footer h2,
+  footer address {
+    width: 40%;
+  }
+}
 
 section.addCourses {
   position: relative;
@@ -56,34 +59,39 @@ section.courseList {
 section.sessionList {
   position: relative;
   bottom: 100px;
-
 }
 
- a {
-   color: #8B1E41;
-   text-decoration: none;
-   padding-right: 1rem;
- }
- /**
+ul.flashes {
+  color: red;
+  text-align: center;
+}
+
+a {
+  color: #8B1E41;
+  text-decoration: none;
+  padding-right: 1rem;
+}
+
+/**
   * Forms
   */
- form {
-   border: none;
-   margin: 0 auto;
-   padding: 1rem;
-   width: 35vw;
- }
+form {
+  border: none;
+  margin: 0 auto;
+  padding: 1rem;
+  width: 35vw;
+}
 
- label {
-   display: block;
-   padding-bottom: 1rem;
- }
+label {
+  display: block;
+  padding-bottom: 1rem;
+}
 
- label input {
-   width: 100%;
- }
+label input {
+  width: 100%;
+}
 
-li{
+li {
   list-style-type: none;
 }
 
@@ -107,9 +115,6 @@ li{
   background-color: slategrey;
 }
 
-.flashes {
-  text-align: center;
-}
 
 header {
   background-color: #8B1E41;
