@@ -78,6 +78,8 @@ def edit_courses(id):
             code = request.form['code']
             description = request.form['description']
 
+            
+
             with db.get_db() as con:
                 with con.cursor() as cur:
 
